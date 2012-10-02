@@ -4,8 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django import forms
 
 from django.core.context_processors import csrf
-from django.http import HttpResponse
-from django.core.context_processors import csrf
+from django.template import RequestContext
 my_choice = (
     ('BG', 'Blog'),
     ('FR', 'Friend'),
@@ -17,9 +16,10 @@ class UserCreation(UserCreationForm):
 
 def create_account(request):
     c = {}
-    c.update(csrf(request))
     if request.POST:
-        return render_to_response("finish.html", c) 
+        print "yup"
+        return render_to_response("finish.html",
+context_instance=RequestContext(request)) 
     else:
         choices = (
         ('BG', 'Blog'),
