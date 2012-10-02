@@ -29,5 +29,5 @@ context_instance=RequestContext(request))
         form = UserCreation()
         return render_to_response(
     "create_account.html",
-        { "form": form })
+        { "form": form }, RequestContext(request))
  
