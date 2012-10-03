@@ -26,6 +26,8 @@ def create_account(request):
             form.clean_username()
             form.clean_password2()
             form.save()
+            authenticate(request.POST['username'])
+            login(request.POST['password1'])
             return render_to_response('finish.html')
         return render_to_response('finish.html') # This will be changed to some
 #sort of error page
