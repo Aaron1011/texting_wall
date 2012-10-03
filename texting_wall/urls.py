@@ -15,5 +15,6 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
     url(r'^create_account/', 'main.views.create_account'),
-    url(r'^finish/', 'main.views.process'),
-    url(r'^login/', 'main.views.login'),)
+    url(r'^finish/', 'main.views.finish'),
+    url(r'^login/', 'django.contrib.auth.views.login',
+kwargs={"template_name": 'login.html'}),)

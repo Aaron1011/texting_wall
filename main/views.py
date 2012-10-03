@@ -23,6 +23,8 @@ def create_account(request):
     if request.POST:
         form = UserCreationForm(data=request.POST)
         if form.is_valid():
+            form.clean_username()
+            form.clean_password2()
             form.save()
             return render_to_response('finish.html')
         return render_to_response('finish.html') # This will be changed to some
@@ -39,18 +41,6 @@ def create_account(request):
     "create_account.html",
         { "form": form }, RequestContext(request))
         
-def login(request):
-	if request.POST:
-		username = request.POST['username']
-		password = request.POST['password']
-		user = authenticate(username=username, password=password)
- 		if user is not None:
- 			auth_login(request, user)
- 			return HttpResponse("You have been logged it.")
- 		else:
- 			return HttpResponse("Login failed")
- 	else:
- 		form = AuthenticationForm()
- 		return render_to_response(
- 			"login.html", 
- 			{ "form": form }, RequestContext(request))
+ 			
+def finish(request):
+	return HttpResponse("Login Successfull!")
