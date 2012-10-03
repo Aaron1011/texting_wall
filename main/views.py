@@ -26,11 +26,10 @@ def create_account(request):
             form.clean_username()
             form.clean_password2()
             form.save()
-            authenticate(request.POST['username'])
-            login(request.POST['password1'])
+            user = authenticate(username=form.cleaned_data["username"],
+                            password=form.cleaned_data["password1"])
+            login(request,user)
             return render_to_response('finish.html')
-        return render_to_response('finish.html') # This will be changed to some
-#sort of error page
     else:
         choices = (
         ('BG', 'Blog'),
