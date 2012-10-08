@@ -8,3 +8,9 @@ class Wall(models.Model):
 
     def __unicode__(self):
         return self.name
+        
+TRAFFIC_SOURCE = (
+    ('BG', 'Blog'),
+    ('FR', 'Friend'),
+    ('OT', 'Other',)
+)
