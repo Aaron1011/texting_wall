@@ -38,20 +38,11 @@ def create_account(request):
             login(request,user)
             return render_to_response('finish.html')
     else:
-        choices = (
-        ('BG', 'Blog'),
-        ('FR', 'Friend'),
-        ('OT', 'Other',
-))
-        
-        
         return render_to_response(
     "create_account.html",
         { "form": form }, RequestContext(request))
-        
- 			
 def finish(request):
-	return HttpResponse("Login Successfull!")
+    return HttpResponse("Login Successfull!")
 
 def new_wall(request):
     if request.POST:
