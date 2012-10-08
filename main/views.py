@@ -2,6 +2,7 @@
 from django.shortcuts import render_to_response
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
+from django.contrib.auth import forms
 
 from django.core.context_processors import csrf
 from django.contrib.auth.models import User
@@ -18,11 +19,17 @@ my_choice = (
 class UserCreation(UserCreationForm):
     about_textwall = forms.ChoiceField(my_choice)
 
+
+class WallForm(forms.ModelForm):
+    class Meta:
+        model = Wall
+
 def create_account(request):
     form = UserCreation()
     if request.POST:
         form = UserCreationForm(data=request.POST)
         if form.is_valid():
+            print form.cleaned_data["username"]
             form.clean_username()
             form.clean_password2()
             form.save()
@@ -45,3 +52,12 @@ def create_account(request):
  			
 def finish(request):
 	return HttpResponse("Login Successfull!")
+
+def new_wall(request):
+    if request.POST:
+        pass
+    else:
+        form = WallForm()
+        return render_to_response(
+        "create_wall.html",
+            {"form": form}, RequestContext(request))
