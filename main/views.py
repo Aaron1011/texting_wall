@@ -41,4 +41,4 @@ def new_wall(request):
         form = local_forms.WallForm()
         return render_to_response(
         "create_wall.html",
-            {"form": form}, RequestContext(request))
+            {"form": form, "sms_keyword": "123"}, RequestContext(request))
