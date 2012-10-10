@@ -10,8 +10,9 @@ from django.contrib.auth import login as auth_login
 from django.http import HttpResponse
 from forms import WallForm
 import forms as local_forms
+import models
 from django.contrib.auth.decorators import login_required
-
+import random, string
 
 def create_account(request):
     form = local_forms.UserCreation()
@@ -38,7 +39,8 @@ def new_wall(request):
         wallform.save()
         return HttpResponse("Hello, World!")
     else:
+        keyword = "".join(random.choice(string.lowercase) for i in range(1,4))
         form = local_forms.WallForm()
         return render_to_response(
         "create_wall.html",
-            {"form": form, "sms_keyword": "123"}, RequestContext(request))
+            {"form": form, "sms_keyword": keyword}, RequestContext(request))
