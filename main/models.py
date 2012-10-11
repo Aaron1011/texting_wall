@@ -6,6 +6,7 @@ def _generate_default_hashtag():
     return "".join(random.choice(string.lowercase) for i in range(3))
 class Wall(models.Model):
     hashtag = models.CharField(max_length=20, help_text='Twitter hashtag to tweet to', default=_generate_default_hashtag())
+    sms_keyword = models.CharField(max_length=15, editable=False)
     user =  models.ForeignKey(User, editable=False)
 
     def __unicode__(self):
