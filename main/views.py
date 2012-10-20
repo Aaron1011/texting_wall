@@ -7,12 +7,37 @@ from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from forms import WallForm
 import forms as local_forms
 import models
 from django.contrib.auth.decorators import login_required
-import random, string
+from django.views.decorators.csrf import csrf_exempt
+import random, string, re
+from Pubnub import Pubnub
+@login_required(login_url='/login', redirect_field_name='/create_wall') 
+def display_wall(request, id):
+    wall = models.Wall.objects.get(pk=id)
+    print str(wall.sms_keyword)
+    return render_to_response("wall.html", {'wall': wall})
+
+@csrf_exempt
+def sms_message(request):
+    PUBLISH_KEY = "pub-8a8223f4-631c-4484-a118-2b01232307cc"
+    SUBSCRIBE_KEY = "sub-e754ed6b-133d-11e2-91f2-b58e6c804094"
+    SECRET = "sec-ZjcxZGVjNDAtZWQyMC00MGZmLTg1Y2MtNmJkNGE3YTJiYjlj"
+    message = request.POST['Body']
+
+    matched_message = re.match("^\s*(\w*)\s+(.*)", message)
+     
+    pubnub = Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY, SECRET, False)
+    info = pubnub.publish({
+            'channel' : matched_message.group(1),
+            'message' : {
+                'message' : matched_message.group(2)
+            }
+    })
+    print matched_message.groups()
 
 def create_account(request):
     form = local_forms.UserCreation()
@@ -22,7 +47,7 @@ def create_account(request):
             form.save()
             user = authenticate(username=form.cleaned_data["username"],
                             password=form.cleaned_data["password1"])
-            login(request,user)
+            auth_login(request,user)
             return render_to_response('finish.html')
     else:
         return render_to_response(
@@ -30,17 +55,18 @@ def create_account(request):
         { "form": form }, RequestContext(request))
 def finish(request):
     return HttpResponse("Login Successfull!")
+
 @login_required(login_url="/login", redirect_field_name='/create_wall' )
 def new_wall(request):
     if request.POST:
         f = WallForm(data=request.POST)
         wallform = f.save(commit=False)
-        wallform.user.username = request.user
+        wallform.user = request.user
         wallform.save()
-        return HttpResponse("Hello, World!")
+        return HttpResponseRedirect('/wall/' + str(wallform.id))
     else:
         keyword = "".join(random.choice(string.lowercase) for i in range(1,4))
-        form = local_forms.WallForm()
+        form = local_forms.WallForm(initial={'sms_keyword': keyword}, data={'sms_keyword': keyword})
         return render_to_response(
         "create_wall.html",
             {"form": form, "sms_keyword": keyword}, RequestContext(request))

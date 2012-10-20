@@ -5,5 +5,6 @@ class UserCreation(UserCreationForm):
     about_textwall = forms.ChoiceField(TRAFFIC_SOURCE)
 
 class WallForm(forms.ModelForm):
+    sms_keyword = forms.CharField(widget=forms.HiddenInput)
     class Meta:
         model = Wall

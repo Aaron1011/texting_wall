@@ -3,7 +3,6 @@
 <form  action="." method="post">{% csrf_token %}
 <p>SMS keyword: {{ sms_keyword }}<p>
 {{ form.as_p }}
-<input type="hidden" value={{ sms_keyword }} />
 <input type="submit" value="Create Form" />
 </form>
 {% endblock  %}

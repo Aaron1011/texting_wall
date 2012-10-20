@@ -3,10 +3,42 @@
 <html>
 
 <head>
+<title>Test</title>
 </head>
 
 <body>
-{% block content%}{% endblock %}
+{% block content%} {% endblock %}
+{% block javascript %}
+<div pub-key="pub-8a8223f4-631c-4484-a118-2b01232307cc"
+sub-key="sub-e754ed6b-133d-11e2-91f2-b58e6c804094" ssl="off"
+origin="pubsub.pubnub.com" id="pubnub"></div>
+<script src="http://cdn.pubnub.com/pubnub-3.1.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>
+<script>(function(){
+ 
+    // LISTEN FOR MESSAGES
+    PUBNUB.subscribe({
+        channel    : {{ wall.sms_keyword }},      // CONNECT TO THIS CHANNEL.
+ 
+        restore    : false,              // STAY CONNECTED, EVEN WHEN BROWSER
+IS CLOSED
+                                         // OR WHEN PAGE CHANGES.
+ 
+        callback   : function(message) { // RECEIVED A MESSAGE.
+            alert(message);
+            $('.messages').append("<p style='font-size:32px;'>" + message + '</p>'>);
+        },
+ 
+ 
+ 
+ 
+            })
+ 
+        }
+ 
+})();
+alert({{ wall.keyword }};</script>
+{% endblock %}
 </body>
 
 </html>
