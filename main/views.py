@@ -28,7 +28,7 @@ def sms_message(request):
     SECRET = "sec-ZjcxZGVjNDAtZWQyMC00MGZmLTg1Y2MtNmJkNGE3YTJiYjlj"
     message = request.POST['Body']
 
-    matched_message = re.match("^\s*(\w*)\s+(.*)", message)
+    matched_message = re.match("^\s*(\w{3})\s*(.*)", message)
      
     pubnub = Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY, SECRET, False)
     info = pubnub.publish({
