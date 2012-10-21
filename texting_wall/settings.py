@@ -1,7 +1,7 @@
 # Django settings for texting_wall project.
 
 import os
-
+from os import environ
 def _rel(*x):
     return os.path.join(os.path.dirname(__file__), "..", *x)
 
