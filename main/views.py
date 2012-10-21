@@ -56,17 +56,18 @@ def create_account(request):
 def finish(request):
     return HttpResponse("Login Successfull!")
 
-@login_required(login_url="/login", redirect_field_name='/create_wall' )
+@login_required(login_url="/login", redirect_field_name='/create_wall/' )
 def new_wall(request):
     if request.POST:
         f = WallForm(data=request.POST)
         wallform = f.save(commit=False)
         wallform.user = request.user
+        print wallform.sms_keyword
         wallform.save()
         return HttpResponseRedirect('/wall/' + str(wallform.id))
     else:
         keyword = "".join(random.choice(string.lowercase) for i in range(1,4))
-        form = local_forms.WallForm(initial={'sms_keyword': keyword}, data={'sms_keyword': keyword})
+        form = WallForm(data={'sms_keyword': keyword})
         return render_to_response(
         "create_wall.html",
             {"form": form, "sms_keyword": keyword}, RequestContext(request))
