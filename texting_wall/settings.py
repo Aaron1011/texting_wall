@@ -153,3 +153,10 @@ LOGGING = {
         },
     }
 }
+
+env = environ.get("RACK_ENV", "dev")
+
+if env == "production":
+    DEBUG = False
+    import dj_database_url
+    DATABASES['default'] =  dj_database_url.config()
