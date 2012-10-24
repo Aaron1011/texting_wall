@@ -118,7 +118,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
-    'gunicorn',
+    
 
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
@@ -159,5 +159,6 @@ env = environ.get("RACK_ENV", "dev")
 
 if env == "production":
     DEBUG = False
+    INSTALLED_APPS += ('gunicorn',)
     import dj_database_url
     DATABASES['default'] =  dj_database_url.config()
