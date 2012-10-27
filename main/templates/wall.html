@@ -14,7 +14,6 @@ origin="pubsub.pubnub.com" id="pubnub"></div>
     PUBNUB.subscribe( {
         channel    : "{{ wall.sms_keyword }}",             
         callback   : function(message) {
-            alert(message);
             $('.messages').append("<p>" + message['message'] + "</p>");
         }
     });
