@@ -9,9 +9,8 @@ from main.models import Wall
 from main import Pubnub
 import json, re
 import time
-from django.conf import settings as app_settings
-pubnub = Pubnub.Pubnub(app_settings.PUBLISH_KEY, app_settings.SUBSCRIBE_KEY, app_settings.SECRET, False)
-hashtags = []
+
+
 
 
 
@@ -23,36 +22,41 @@ class PubnubListener(StreamListener):
     """
     def on_data(self, data):
         message = json.loads(data)
-        if message.has_key('text'):
-            tweet = re.match("(\S*)\s(.*)", str(message['text']))
-            wall = Wall.objects.filter(hashtag__exact=tweet.group(1))
-            pubnub.publish({
+        tweet = re.match("(\S*)\s(.*)", str(message['text']))
+        print tweet.group(1)
+        wall = Wall.objects.filter(hashtag__exact=tweet.group(1))
+        pubnub.publish({
             'channel' : wall[0].sms_keyword,
             'message' : {
                 'message' : tweet.group(2)
-                }
-            })
-        else:
-            print message
+            }
+        })
         return True
 
     def on_error(self, status):
         print status
 
-l = PubnubListener()
-auth = OAuthHandler(settings.CONSUMER_KEY, settings.CONSUMER_SECRET)
-auth.set_access_token(settings.ACCESS_TOKEN, settings.ACCESS_TOKEN_SECRET)
+
 
 def main():
+    pubnub = Pubnub.Pubnub(settings.PUBLISH_KEY, settings.SUBSCRIBE_KEY, settings.SECRET, False)
+    hashtags = set()
+
+    auth = OAuthHandler(settings.consumer_key, settings.consumer_secret)
+    auth.set_access_token(settings.access_token, settings.access_token_secret)
+    print("Oauth Hander has consumer key {0} and consumer secret {1}".format(settings.consumer_key,settings.consumer_secret))
+    print("Oauth handler has access token {0} and access token secret {1}".format(settings.access_token, settings.access_token_secret))
+    stream = None
     while True:
-        all_walls = Wall.objects.all()
-        for wall in all_walls:
-            if not wall.hashtag in hashtags:
-                print wall.hashtag
-                hashtags.append(wall.hashtag)
-                stream = Stream(auth, l)
-                stream.filter(track=[wall.hashtag], async=True)
-                time.sleep(5)
+        current_hashtags = set(w.hashtag for w in Wall.objects.all())
+        if len(current_hashtags - hashtags) > 0:
+            if stream is not None:
+                stream.disconnect()
+            stream = Stream(auth, PubnubListener(pubnub))
+            hashtags = current_hashtags
+            print("Now filtering " + ", ".join(list(hashtags)))
+            stream.filter(track=[hashtags], async=True)
+        time.sleep(5)
 
 if __name__ == '__main__':
     main()

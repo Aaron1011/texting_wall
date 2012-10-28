@@ -8,16 +8,20 @@ def _rel(*x):
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-
 PUBLISH_KEY = "pub-8a8223f4-631c-4484-a118-2b01232307cc"
 SUBSCRIBE_KEY = "sub-e754ed6b-133d-11e2-91f2-b58e6c804094"
 SECRET = "sec-ZjcxZGVjNDAtZWQyMC00MGZmLTg1Y2MtNmJkNGE3YTJiYjlj"
 
-CONSUMER_KEY = "3yyqRg7yqmyIZvzOzJI20w"
-CONSUMER_SECRET = "lPGDVv8dSctExxkXOAqXUnQKEJPBiUJq791XC8PGeI"
+# Go to http://dev.twitter.com and create an app. 
+# The consumer key and secret will be generated for you after
+consumer_key="q5e6ZJnp8OfiZhdmo6VEuQ"
+consumer_secret="S8rq1T2jnFloWCVtRFbyi0vmyqxzURHSRMeVyGsQ"
 
-ACCESS_TOKEN = "879862038-DAGmivCACAap96mZxPi4YfIRwM3Zv3TnG4SGyQYN"
-ACCESS_TOKEN_SECRET = "Olwot3CAYkPUfIVOf2pdAk2LDmN9gsd255B0Xagtjo" 
+# After the step above, you will be redirected to your app's page.
+# Create an access token under the the "Your access token" section
+access_token="879862038-f9vQhcogCEzbXad5d1YcRbcGeTMcnL8xl3SLRHIU"
+access_token_secret="OuzrsunPqAPHUTP6FckvOAWvQOrADz8v4VUUk2GvRl8"
+
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
