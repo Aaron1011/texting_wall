@@ -22,18 +22,20 @@ class PubnubListener(StreamListener):
         self.pubnub = pubnub
 
     def on_data(self, data):
-        print data
         message = json.loads(data)
-        tweet = re.match("(\S*)\s(.*)", str(message['text']))
-        print tweet.group(1)
-        wall = Wall.objects.filter(hashtag__exact=tweet.group(1))
-        self.pubnub.publish({
-            'channel' : wall[0].sms_keyword,
-            'message' : {
-                'message' : tweet.group(2)
-            }
-        })
-        return True
+        if message.has_key('text'):
+            tweet = re.match("(\S*)\s(.*)", str(message['text']))
+            wall = Wall.objects.filter(hashtag__exact=tweet.group(1))
+            self.pubnub.publish({
+                'channel' : wall[0].sms_keyword,
+                'message' : {
+                    'message' : tweet.group(2)
+                }
+            })
+        else:
+            print message
+
+        return True            
 
     def on_error(self, status):
         print status
@@ -54,7 +56,7 @@ def main():
             stream = Stream(auth, PubnubListener(pubnub))
             hashtags = current_hashtags
             print("Now filtering " + ", ".join(list(hashtags)))
-            stream.filter(track=[hashtags], async=True)
+            stream.filter(track=list(hashtags), async=True)
         time.sleep(5)
 
 if __name__ == '__main__':
