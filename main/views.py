@@ -69,10 +69,9 @@ def new_wall(request):
             wallform.save()
             return HttpResponseRedirect('/wall/' + str(wallform.id))
         else:
-            keyword = "".join(random.choice(string.lowercase) for i in range(1,4))
             return render_to_response(
             "create_wall.html",
-                {"form": f, "sms_keyword": keyword}, RequestContext(request))
+                {"form": f, "sms_keyword": f.data['sms_keyword']}, RequestContext(request))
 
     keyword = "".join(random.choice(string.lowercase) for i in range(1,4))
     form = WallForm(data={'sms_keyword': keyword})

@@ -7,8 +7,8 @@ class UserCreation(UserCreationForm):
 class WallForm(forms.ModelForm):
     def clean_hashtag(self):
         if self.cleaned_data['hashtag'][0] != u'#':
-            print "Whoops!"
             raise forms.ValidationError("Hashtag doesn't start with #")
+        return self.cleaned_data['hashtag']
     class Meta:
         model = Wall
         widgets = {
