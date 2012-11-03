@@ -2,8 +2,6 @@
 
 import os
 from os import environ
-def _rel(*x):
-    return os.path.join(os.path.dirname(__file__), "..", *x)
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -123,7 +121,8 @@ ROOT_URLCONF = 'texting_wall.urls'
 WSGI_APPLICATION = 'texting_wall.wsgi.application'
 
 TEMPLATE_DIRS = (
-    _rel("templates"),
+    os.path.abspath("templates"),
+    os.path.abspath("main/templates")
 )
 INSTALLED_APPS = (
     'django.contrib.auth',
