@@ -49,6 +49,9 @@ def create_account(request):
                             password=form.cleaned_data["password1"])
             auth_login(request,user)
             return render_to_response('finish.html')
+        return render_to_response(
+            "create_account.html",
+                { "form": form }, RequestContext(request))
     else:
         return render_to_response(
     "create_account.html",
@@ -60,14 +63,19 @@ def finish(request):
 def new_wall(request):
     if request.POST:
         f = WallForm(data=request.POST)
-        wallform = f.save(commit=False)
-        wallform.user = request.user
-        print wallform.sms_keyword
-        wallform.save()
-        return HttpResponseRedirect('/wall/' + str(wallform.id))
-    else:
-        keyword = "".join(random.choice(string.lowercase) for i in range(1,4))
-        form = WallForm(data={'sms_keyword': keyword})
-        return render_to_response(
-        "create_wall.html",
-            {"form": form, "sms_keyword": keyword}, RequestContext(request))
+        if f.is_valid():
+            wallform = f.save(commit=False)
+            wallform.user = request.user
+            wallform.save()
+            return HttpResponseRedirect('/wall/' + str(wallform.id))
+        else:
+            keyword = "".join(random.choice(string.lowercase) for i in range(1,4))
+            return render_to_response(
+            "create_wall.html",
+                {"form": f, "sms_keyword": keyword}, RequestContext(request))
+
+    keyword = "".join(random.choice(string.lowercase) for i in range(1,4))
+    form = WallForm(data={'sms_keyword': keyword})
+    return render_to_response(
+    "create_wall.html",
+        {"form": form, "sms_keyword": keyword}, RequestContext(request))
