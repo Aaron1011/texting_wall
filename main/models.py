@@ -10,10 +10,12 @@ class Wall(models.Model):
     user =  models.ForeignKey(User, editable=False)
     sms_keyword = models.CharField(max_length=20)
     def __unicode__(self):
-        return self.name
-        
+        return self.sms_keyword
+
 TRAFFIC_SOURCE = (
     ('BG', 'Blog'),
     ('FR', 'Friend'),
     ('OT', 'Other',)
 )
+
+
