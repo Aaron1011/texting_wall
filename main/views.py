@@ -27,17 +27,25 @@ def sms_message(request):
     SUBSCRIBE_KEY = "sub-e754ed6b-133d-11e2-91f2-b58e6c804094"
     SECRET = "sec-ZjcxZGVjNDAtZWQyMC00MGZmLTg1Y2MtNmJkNGE3YTJiYjlj"
     message = request.POST['Body']
-
-    matched_message = re.match("^\s*(\w{3})\s*(.*)", message)
-     
+    sms_codes, message = _split_message(message)
+    for item in sms_codes.groups():
+        try:
+            sms_code = models.Wall.objects.get(sms_keyword=item)
+        except DoesNotExist:
+            sms_code = ''
     pubnub = Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY, SECRET, False)
     info = pubnub.publish({
-            'channel' : matched_message.group(1),
+            'channel' : sms_code,
             'message' : {
-                'message' : matched_message.group(2)
+                'message' : message
             }
     })
     print matched_message.groups()
+
+def _split_message(message):
+    codes = re.search("(^|\s)(\w{3})(\s|$)", message)
+    message = message.replace(codes.group(2), '').replace('  ', ' ')
+    return codes.group(2), message.strip()
 
 def create_account(request):
     form = local_forms.UserCreation()

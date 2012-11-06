@@ -6,11 +6,24 @@ Replace this with more appropriate tests for your application.
 """
 
 from django.test import TestCase
+from main.views import _split_message
+from main.models import Wall
+from django.contrib.auth.models import User
+class SMSTest(TestCase):
+
+    def test_sms_keyword(self):
+        user = User.objects.create_user('Bob', 'Bob')
+        user.save()
 
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
+        a = Wall()
+        a.hashtag = "#abc"
+        a.sms_keyword = 'abc'
+        a.user = user
+        a.save()
+
+        self.assertEquals(_split_message('abc Hello world'), ('abc', 'Hello world'))
+        self.assertEquals(_split_message('Hello abc world'), ('abc', 'Hello world'))
+        self.assertEquals(_split_message('Hello world abc'), ('abc', 'Hello world'))
+        self.assertEquals(_split_message('Hello AbC world'), ('AbC', 'Hello world'))
+        self.assertEquals(_split_message('Hello world abC'), ('abC', 'Hello world'))
