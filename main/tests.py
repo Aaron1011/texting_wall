@@ -56,3 +56,4 @@ class SMSTest(TestCase):
 
         self.assertEquals(_split_message('Hello world abC'), ('abC', 'Hello world'))
         self.assertEquals(_split_message('This is a message'), (None, None))
+        self.assertEquals(_split_message('How are you'), (None, None))

@@ -48,15 +48,16 @@ def _split_message(message):
     if codes == None:
         return None, None
     keyword = _get_keyword(codes)
+    if keyword == None:
+        return None, None
     message = message.replace(keyword, '').replace('  ', ' ')
     return keyword, message.strip()
 
 def _get_keyword(regexp):
-    keyword = None
     for keyword in regexp.groups():
         if models.Wall.objects.filter(sms_keyword=keyword).exists():
-            break
-    return keyword
+            return keyword
+    return None
 
 def create_account(request):
     form = local_forms.UserCreation()
