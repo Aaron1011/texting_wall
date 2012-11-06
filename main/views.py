@@ -28,24 +28,31 @@ def sms_message(request):
     SECRET = "sec-ZjcxZGVjNDAtZWQyMC00MGZmLTg1Y2MtNmJkNGE3YTJiYjlj"
     message = request.POST['Body']
     sms_codes, message = _split_message(message)
-    for item in sms_codes.groups():
-        try:
-            sms_code = models.Wall.objects.get(sms_keyword=item)
-        except DoesNotExist:
-            sms_code = ''
-    pubnub = Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY, SECRET, False)
-    info = pubnub.publish({
+    if sms_codes != None and message != None:
+        pubnub = Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY, SECRET, False)
+        info = pubnub.publish({
             'channel' : sms_code,
             'message' : {
                 'message' : message
             }
-    })
-    print matched_message.groups()
+        })
+        print matched_message.groups()
 
 def _split_message(message):
     codes = re.search("(^|\s)(\w{3})(\s|$)", message)
-    message = message.replace(codes.group(2), '').replace('  ', ' ')
-    return codes.group(2), message.strip()
+    valid = True
+    for keyword in codes.groups():
+        try:
+            models.Wall.objects.get(sms_keyword=keyword)
+        except models.Wall.DoesNotExist:
+            valid = False
+        else:
+            valid = True
+            break
+    if valid == False:
+        return None, None
+    message = message.replace(keyword, '').replace('  ', ' ')
+    return keyword, message.strip()
 
 def create_account(request):
     form = local_forms.UserCreation()

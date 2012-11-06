@@ -25,5 +25,13 @@ class SMSTest(TestCase):
         self.assertEquals(_split_message('abc Hello world'), ('abc', 'Hello world'))
         self.assertEquals(_split_message('Hello abc world'), ('abc', 'Hello world'))
         self.assertEquals(_split_message('Hello world abc'), ('abc', 'Hello world'))
+
+        a.sms_keyword = 'AbC'
+        a.save()
+
         self.assertEquals(_split_message('Hello AbC world'), ('AbC', 'Hello world'))
+
+        a.sms_keyword = 'abC'
+        a.save()
+
         self.assertEquals(_split_message('Hello world abC'), ('abC', 'Hello world'))
