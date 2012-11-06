@@ -26,7 +26,7 @@ class PubnubListener(StreamListener):
         if message.has_key('text'):
             tweet = re.search("(#\S+)", str(message['text']))
             print tweet.group(1)
-            wall = Wall.objects.filter(hashtag__exact=tweet.group(1))
+            wall = Wall.objects.filter(hashtag__iexact=tweet.group(1))
             if len(wall) > 0:
                 self.pubnub.publish({
                     'channel' : wall[0].sms_keyword,
