@@ -11,6 +11,20 @@ from main.models import Wall
 from django.contrib.auth.models import User
 class SMSTest(TestCase):
 
+    def test_single_wall(self):
+        user = User.objects.create_user('Bob', 'Bob')
+        user.save()
+
+
+        a = Wall()
+        a.hashtag = "#abc"
+        a.sms_keyword = 'abc'
+        a.user = user
+        a.save()
+
+        self.assertEquals(_split_message('This is a sentence'), ('abc', 'This is a sentence'))
+       
+
     def test_sms_keyword(self):
         user = User.objects.create_user('Bob', 'Bob')
         user.save()
@@ -21,6 +35,12 @@ class SMSTest(TestCase):
         a.sms_keyword = 'abc'
         a.user = user
         a.save()
+
+        b = Wall()
+        b.hashtah = "#qwe"
+        b.sms_keyword = 'qwe'
+        b.user = user
+        b.save()
 
         self.assertEquals(_split_message('abc Hello world'), ('abc', 'Hello world'))
         self.assertEquals(_split_message('Hello abc world'), ('abc', 'Hello world'))
@@ -35,3 +55,4 @@ class SMSTest(TestCase):
         a.save()
 
         self.assertEquals(_split_message('Hello world abC'), ('abC', 'Hello world'))
+        self.assertEquals(_split_message('This is a message'), (None, None))

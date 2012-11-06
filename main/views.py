@@ -39,7 +39,14 @@ def sms_message(request):
         print matched_message.groups()
 
 def _split_message(message):
+    wall = models.Wall.objects.all()
+    if len(wall) == 1:
+        keyword = str(wall[0].sms_keyword)
+        message = message.replace(keyword, '').replace('  ', ' ')
+        return keyword, message
     codes = re.search("(^|\s)(\w{3})(\s|$)", message)
+    if codes == None:
+        return None, None
     valid = True
     for keyword in codes.groups():
         try:
