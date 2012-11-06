@@ -47,19 +47,19 @@ def _split_message(message):
     codes = re.search("(^|\s)(\w{3})(\s|$)", message)
     if codes == None:
         return None, None
-    valid = True
-    for keyword in codes.groups():
+    keyword = _get_keyword(codes)
+    message = message.replace(keyword, '').replace('  ', ' ')
+    return keyword, message.strip()
+
+def _get_keyword(regexp):
+    for keyword in regexp.groups():
         try:
             models.Wall.objects.get(sms_keyword=keyword)
         except models.Wall.DoesNotExist:
-            valid = False
+            keyword = None
         else:
-            valid = True
             break
-    if valid == False:
-        return None, None
-    message = message.replace(keyword, '').replace('  ', ' ')
-    return keyword, message.strip()
+    return keyword
 
 def create_account(request):
     form = local_forms.UserCreation()
