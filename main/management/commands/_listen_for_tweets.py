@@ -23,6 +23,7 @@ class PubnubListener(StreamListener):
 
     def on_data(self, data):
         message = json.loads(data)
+        print message
         if message.has_key('text'):
             tweet = re.search("(#\S+)", str(message['text']))
             print tweet.group(1)
