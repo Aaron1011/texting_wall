@@ -52,12 +52,9 @@ def _split_message(message):
     return keyword, message.strip()
 
 def _get_keyword(regexp):
+    keyword = None
     for keyword in regexp.groups():
-        try:
-            models.Wall.objects.get(sms_keyword=keyword)
-        except models.Wall.DoesNotExist:
-            keyword = None
-        else:
+        if models.Wall.objects.filter(sms_keyword=keyword).exists():
             break
     return keyword
 
