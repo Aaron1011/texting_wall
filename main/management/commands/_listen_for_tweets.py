@@ -24,15 +24,16 @@ class PubnubListener(StreamListener):
     def on_data(self, data):
         message = json.loads(data)
         if message.has_key('text'):
-            tweet = re.match("(\S*)\s(.*)", str(message['text']))
+            tweet = re.search("(#\S+)", str(message['text']))
             print tweet.group(1)
             wall = Wall.objects.filter(hashtag__exact=tweet.group(1))
-            self.pubnub.publish({
-                'channel' : wall[0].sms_keyword,
-                'message' : {
-                    'message' : tweet.group(2)
-                }
-            })
+            if len(wall) > 0:
+                self.pubnub.publish({
+                    'channel' : wall[0].sms_keyword,
+                    'message' : {
+                        'message' : str(message['text'])
+                    }
+                })
         else:
             print message
 
@@ -50,15 +51,18 @@ def main():
     auth.set_access_token(settings.access_token, settings.access_token_secret)
     stream = None
     while True:
-        current_hashtags = set(w.hashtag for w in Wall.objects.all())
-        if len(current_hashtags - hashtags) > 0:
-            if stream is not None:
-                stream.disconnect()
-            stream = Stream(auth, PubnubListener(pubnub))
-            hashtags = current_hashtags
-            print("Now filtering " + ", ".join(list(hashtags)))
-            stream.filter(track=list(hashtags), async=True)
-        time.sleep(5)
+        try:
+            current_hashtags = set(w.hashtag for w in Wall.objects.all())
+            if len(current_hashtags - hashtags) > 0:
+                if stream is not None:
+                    stream.disconnect()
+                stream = Stream(auth, PubnubListener(pubnub))
+                hashtags = current_hashtags
+                print("Now filtering " + ", ".join(list(hashtags)))
+                stream.filter(track=list(hashtags), async=True)
+            time.sleep(5)
+        except Exception as e:
+            print e
 
 if __name__ == '__main__':
     main()
