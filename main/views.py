@@ -15,6 +15,9 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 import random, string, re
 from Pubnub import Pubnub
+
+def index(request):
+    return render_to_response("index.html", RequestContext(request))
 @login_required(login_url='/login', redirect_field_name='/create_wall') 
 def display_wall(request, id):
     wall = models.Wall.objects.get(pk=id)
