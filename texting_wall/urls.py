@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-
+from django.conf import settings
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
@@ -21,3 +21,9 @@ urlpatterns = patterns('',
     url(r'^create_wall/', 'main.views.new_wall'),
     url(r'^recieve_sms/', 'main.views.sms_message'),
     url(r'^wall/(?P<id>\d+)/', 'main.views.display_wall'))
+
+if not settings.DEBUG:
+    urlpatterns += patterns('',
+        (r'^static/(?P<path>.*)$', 'django.views.static.serve',
+{'document_root': settings.STATIC_ROOT}),
+    )
