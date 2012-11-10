@@ -22,8 +22,3 @@ urlpatterns = patterns('',
     url(r'^recieve_sms/', 'main.views.sms_message'),
     url(r'^wall/(?P<id>\d+)/', 'main.views.display_wall'))
 
-if not settings.DEBUG:
-    urlpatterns += patterns('',
-        (r'^static/(?P<path>.*)$', 'django.views.static.serve',
-{'document_root': settings.STATIC_ROOT}),
-    )
