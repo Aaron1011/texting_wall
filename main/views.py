@@ -34,12 +34,13 @@ def sms_message(request):
     if sms_codes != None and message != None:
         pubnub = Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY, SECRET, False)
         info = pubnub.publish({
-            'channel' : sms_code,
+            'channel' : sms_codes,
             'message' : {
                 'message' : message
             }
         })
-        print matched_message.groups()
+        print info
+    print 
 
 def _split_message(message):
     wall = models.Wall.objects.all()
