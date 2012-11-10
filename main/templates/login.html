@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
+{% if form.errors %}
+<div class="alert alert-error" data-dismiss="alert">
+<button type="button" class="close" data-dismiss="alert alert-error">&times;</button>
+<p>Oops! Your username and password didn't match what we have. Double-check
+that you have typed them in correctly</p>
+</div>
+{% endif %}
+
 <div class="row">
 <div class="span1 offset3">
 <h2>Login</h2>
