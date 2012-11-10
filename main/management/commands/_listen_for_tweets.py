@@ -48,8 +48,8 @@ def main():
     pubnub = Pubnub.Pubnub(settings.PUBLISH_KEY, settings.SUBSCRIBE_KEY, settings.SECRET, False)
     hashtags = set()
 
-    auth = OAuthHandler(settings.consumer_key, settings.consumer_secret)
-    auth.set_access_token(settings.access_token, settings.access_token_secret)
+    auth = OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
+    auth.set_access_token(settings.TWITTER_ACCESS_TOKEN, settings.TWITTER_ACCESS_TOKEN_SECRET)
     stream = None
     while True:
         try:

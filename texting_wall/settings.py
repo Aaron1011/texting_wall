@@ -12,13 +12,12 @@ SECRET = "sec-ZjcxZGVjNDAtZWQyMC00MGZmLTg1Y2MtNmJkNGE3YTJiYjlj"
 
 # Go to http://dev.twitter.com and create an app. 
 # The consumer key and secret will be generated for you after
-consumer_key="q5e6ZJnp8OfiZhdmo6VEuQ"
-consumer_secret="S8rq1T2jnFloWCVtRFbyi0vmyqxzURHSRMeVyGsQ"
-
+TWITTER_CONSUMER_KEY = environ.get("TWITTER_CONSUMER_KEY", "")
+TWITTER_CONSUMER_SECRET = environ.get("TWITTER_CONSUMER_SECRET", "")
 # After the step above, you will be redirected to your app's page.
 # Create an access token under the the "Your access token" section
-access_token="879862038-f9vQhcogCEzbXad5d1YcRbcGeTMcnL8xl3SLRHIU"
-access_token_secret="OuzrsunPqAPHUTP6FckvOAWvQOrADz8v4VUUk2GvRl8"
+TWITTER_ACCESS_TOKEN = environ.get("TWITTER_ACCESS_TOKEN", "")
+TWITTER_ACCESS_TOKEN_SECRET = environ.get("OuzrsunPqAPHUTP6FckvOAWvQOrADz8v4VUUk2GvRl8", "")
 
 
 ADMINS = (
