@@ -47,20 +47,6 @@ def _split_message(message):
         keyword = str(wall[0].sms_keyword)
         message = message.replace(keyword, '').replace('  ', ' ')
         return keyword, message
-    codes = re.search("(^|\s)(\w{3})(\s|$)", message)
-    if codes == None:
-        return None, None
-    keyword = _get_keyword(codes)
-    if keyword == None:
-        return None, None
-    message = message.replace(keyword, '').replace('  ', ' ')
-    return keyword, message.strip()
-
-def _get_keyword(regexp):
-    for keyword in regexp.groups():
-        if models.Wall.objects.filter(sms_keyword=keyword).exists():
-            return keyword
-    return None
 
 def create_account(request):
     form = local_forms.UserCreation()
