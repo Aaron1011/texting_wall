@@ -61,10 +61,16 @@
     <div class="container-narrow">
 
       <div class="masthead">
+        {% if user.is_authenticated %}
+            <p class="navbar=text pull-right">
+              Logged in as <a href="#" class="navbar-link">{{ user.username }}</a>
+            </p>
+        {% else %}
         <ul class="nav nav-pills pull-right">
           <li class="active"><a href="/login">Login</a></li>
         </ul> 
         <h3 class="muted">Texting Wall</h3>
+        {% endif %}
       </div>
 
       <hr>
