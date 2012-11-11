@@ -1,15 +1,7 @@
 {% extends "base.html" %}
-{% block header %}
-    <meta charset="utf-8">
-    <meta name="google-site-verification"
-content="WnWrzryX1bcHO-Oahx1XMRTxUAU5r7xSB_iRsC5WjPY" />
-    <title>Template &middot; Bootstrap</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <!-- Le styles -->
-        <style type="text/css">
+{% block title %}Texting Wall{% endblock %}
+{% block css %}
+<style type="text/css">
       body {
         padding-top: 20px;
         padding-bottom: 40px;
@@ -45,13 +37,8 @@ content="WnWrzryX1bcHO-Oahx1XMRTxUAU5r7xSB_iRsC5WjPY" />
       .marketing p + h4 {
         margin-top: 28px;
       }
-    </style>
+</style>
     
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
 {% endblock %}    
 {% block content %}
     <div class="container-narrow">
