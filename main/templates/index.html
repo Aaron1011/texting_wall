@@ -1,8 +1,5 @@
 {% extends "base.html" %}
-{% block content %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
+{% block header %}
     <meta charset="utf-8">
     <meta name="google-site-verification"
 content="WnWrzryX1bcHO-Oahx1XMRTxUAU5r7xSB_iRsC5WjPY" />
@@ -55,11 +52,8 @@ content="WnWrzryX1bcHO-Oahx1XMRTxUAU5r7xSB_iRsC5WjPY" />
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-    
-  </head>
-
-  <body>
-
+{% endblock %}    
+{% block content %}
     <div class="container-narrow">
 
       <div class="masthead">
@@ -115,6 +109,4 @@ content="WnWrzryX1bcHO-Oahx1XMRTxUAU5r7xSB_iRsC5WjPY" />
         <p>&copy; Company 2012</p>
       </div>
 
-  </body>
-</html>
 {% endblock %}
