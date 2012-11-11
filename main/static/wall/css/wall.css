@@ -7,6 +7,15 @@ p.instructions {
     left:0px;
 }
 
+p.footer {
+    font-size:20px;
+    background-color:white;
+    position:fixed;
+    bottom:0px;
+    padding:10px;
+}
+
 .messages {
     margin-top:60px;
+    margin-bottom:50px;
 }
