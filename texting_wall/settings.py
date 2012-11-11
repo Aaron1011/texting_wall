@@ -17,7 +17,7 @@ TWITTER_CONSUMER_SECRET = environ.get("TWITTER_CONSUMER_SECRET", "")
 # After the step above, you will be redirected to your app's page.
 # Create an access token under the the "Your access token" section
 TWITTER_ACCESS_TOKEN = environ.get("TWITTER_ACCESS_TOKEN", "")
-TWITTER_ACCESS_TOKEN_SECRET = environ.get("OuzrsunPqAPHUTP6FckvOAWvQOrADz8v4VUUk2GvRl8", "")
+TWITTER_ACCESS_TOKEN_SECRET = environ.get("TWITTER_ACCESS_TOKEN_SECRET", "")
 
 
 ADMINS = (
