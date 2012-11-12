@@ -26,6 +26,8 @@ class WallForm(forms.ModelForm):
     class Meta:
         model = Wall
         widgets = {
-            'sms_keyword' : forms.HiddenInput
+            'hashtag' : forms.TextInput(attrs={
+                'id': 'inputHashtag'
+                })
         }
         exclude = ('phone_number',)
