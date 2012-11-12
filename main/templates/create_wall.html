@@ -1,8 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
+<h2 class="text-info">Create new Wall</h2>
 <form  action="." method="post">{% csrf_token %}
-<p>SMS keyword: {{ sms_keyword }}<p>
+<p>Phone number: {{ phone_number }}<p>
 {{ form.as_p }}
+<input type="hidden" name = "phone_number" value="{{ phone_number }}" />
 <input type="submit" value="Create Form" />
 </form>
 {% endblock  %}
