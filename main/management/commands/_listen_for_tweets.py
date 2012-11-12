@@ -5,7 +5,7 @@ from django.core.management import setup_environ
 from texting_wall import settings
 setup_environ(settings)
 from tweepy.api import API
-from main.models import Wall
+from main.models import Wall, Message
 from main import Pubnub
 import json, re
 import time
@@ -29,6 +29,13 @@ class PubnubListener(StreamListener):
             print tweet.group(1)
             wall = Wall.objects.filter(hashtag__iexact=tweet.group(1))
             if len(wall) > 0:
+                message2 = Message()
+                message2.message = str(message['text'])
+                message2.hashtag = wall[0].hashtag
+                message2.twitter_account = str(message['user']['screen_name'])
+                message2.wall = wall[0]
+                message2.save()
+
                 self.pubnub.publish({
                     'channel' : wall[0].hashtag,
                     'message' : {
