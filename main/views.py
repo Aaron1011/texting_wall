@@ -12,7 +12,7 @@ from forms import WallForm
 import forms as local_forms
 import models
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
+from django_twilio.decorators import twilio_view
 import random, string, re
 from Pubnub import Pubnub
 
@@ -23,7 +23,7 @@ def display_wall(request, id):
     wall = models.Wall.objects.get(pk=id)
     return render_to_response("wall.html", {'wall': wall})
 
-@csrf_exempt
+@twilio_view
 def sms_message(request):
     PUBLISH_KEY = "pub-8a8223f4-631c-4484-a118-2b01232307cc"
     SUBSCRIBE_KEY = "sub-e754ed6b-133d-11e2-91f2-b58e6c804094"
