@@ -1,8 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
-{{ form.non_field_errors }}
+{% if form.errors %}
+<div class="alert alert-error">
+<p>Whoops! Something went wrong here. Correct the following errors and try again</p>
+<ul>
+{% for item in form %}
+    {% for error in item.errors %}
+        <p>{{ item.name|capfirst }}: {{ error }}</p>
+    {% endfor %}
+{% endfor %}
+</ul>
+</div>
+{% endif %}
 <form  action="." method="post">{% csrf_token %}
+<fieldset>
 {{ form.as_p }}
 <input type="submit" value="Create Account" />
+</fieldset>
 </form>
 {% endblock  %}
