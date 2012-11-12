@@ -19,6 +19,8 @@ class Message(models.Model):
     phone_number = models.CharField(max_length=15, null=True)
     wall = models.ForeignKey(Wall)
 
+    def __unicode__(self):
+        return self.message
 
 TRAFFIC_SOURCE = (
     ('BG', 'Blog'),
