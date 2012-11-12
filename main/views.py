@@ -33,6 +33,7 @@ def sms_message(request):
     phone_number = request.POST['From']
 
     hashtag, body = _split_message(twilio_message)
+    print hashtag, body
     if hashtag != None and body != None:
         message = models.Message()
         message.message = body
@@ -48,6 +49,7 @@ def sms_message(request):
             }
         })
         print info
+        return HttpResponse("Success!")
 
 def _split_message(message):
     wall = models.Wall.objects.all()
