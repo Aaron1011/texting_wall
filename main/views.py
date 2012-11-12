@@ -38,6 +38,7 @@ def sms_message(request):
         message.message = body
         message.phone_number = request.POST['From']
         message.wall = models.Wall.objects.get(phone_number=phone_number)
+        message.save()
 
         pubnub = Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY, SECRET, False)
         info = pubnub.publish({
