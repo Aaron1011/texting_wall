@@ -169,7 +169,7 @@ env = environ.get("RACK_ENV", "dev")
 
 if env == "production":
     DEBUG = False
-    INSTALLED_APPS += ('gunicorn', "storages", "south")
+    INSTALLED_APPS += ('gunicorn', "storages", "south", "django_twilio",)
     import dj_database_url
     DATABASES['default'] =  dj_database_url.config()
 
@@ -178,6 +178,8 @@ if env == "production":
     AWS_STORAGE_BUCKET_NAME = environ.get("AWS_STORAGE_BUCKET_NAME", "")
     AWS_ACCESS_KEY_ID = environ.get("AWS_ACCESS_KEY_ID", "")
     AWS_SECRET_ACCESS_KEY = environ.get("AWS_SECRET_ACCESS_KEY", "")
+    TWILIO_ACCOUNT_SID = environ.get("TWILIO_ACCOUNT_SID", "")
+    TWILIO_AUTH_TOKEN = environ.get("TWILIO_AUTH_TOKEN", "")
     STATIC_URL= 'http://s3.amazonaws.com/textingwall/'
     EMAIL_BACKEND = 'django_ses.SESBackend'
     INSTALLATION = "production"
