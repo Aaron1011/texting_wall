@@ -1,3 +1,8 @@
+.messages p {
+    margin-bottom:10px;
+    font-size:20px;
+}
+
 p.instructions {
     font-size:25px;
     background-color:white;
