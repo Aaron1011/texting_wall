@@ -21,7 +21,6 @@ def index(request):
 @login_required(login_url='/login', redirect_field_name='/create_wall') 
 def display_wall(request, id):
     wall = models.Wall.objects.get(pk=id)
-    print str(wall.sms_keyword)
     return render_to_response("wall.html", {'wall': wall})
 
 @csrf_exempt
@@ -29,24 +28,31 @@ def sms_message(request):
     PUBLISH_KEY = "pub-8a8223f4-631c-4484-a118-2b01232307cc"
     SUBSCRIBE_KEY = "sub-e754ed6b-133d-11e2-91f2-b58e6c804094"
     SECRET = "sec-ZjcxZGVjNDAtZWQyMC00MGZmLTg1Y2MtNmJkNGE3YTJiYjlj"
-    message = request.POST['Body']
-    sms_codes, message = _split_message(message)
-    if sms_codes != None and message != None:
+
+    twilio_message = request.POST['Body']
+    phone_number = request.POST['To']
+
+    sms_codes, body = _split_message(twilio_message)
+    if sms_codes != None and body != None:
+        message = models.Message()
+        message.message = body
+        message.phone_number = request.POST['From']
+        message.wall = models.Wall.objects.get(phone_number=phone_number)
+
         pubnub = Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY, SECRET, False)
         info = pubnub.publish({
-            'channel' : sms_codes,
+            'channel' : message.wall.hashtag,
             'message' : {
-                'message' : message
+                'message' : body
             }
         })
         print info
-    print 
 
 def _split_message(message):
     wall = models.Wall.objects.all()
     if len(wall) == 1:
-        keyword = str(wall[0].sms_keyword)
-        message = message.replace(keyword, '').replace('  ', ' ')
+        hashtag = str(wall[0].hashtag)
+        message = message.replace(hashtag, '').replace('  ', ' ')
         return keyword, message
 
 def create_account(request):
@@ -69,6 +75,10 @@ def create_account(request):
 def finish(request):
     return HttpResponse("Login Successfull!")
 
+def _get_phone_number():
+    # This will get an available phone number from Twilio
+    return "6176005993"
+
 @login_required(login_url="/login", redirect_field_name='/create_wall/' )
 def new_wall(request):
     if request.POST:
@@ -76,15 +86,17 @@ def new_wall(request):
         if f.is_valid():
             wallform = f.save(commit=False)
             wallform.user = request.user
+            wallform.phone_number = f.data['phone_number']
             wallform.save()
             return HttpResponseRedirect('/wall/' + str(wallform.id))
         else:
+            print dir(f)
             return render_to_response(
             "create_wall.html",
-                {"form": f, "sms_keyword": f.data['sms_keyword']}, RequestContext(request))
+                {"form": f, "phone_number": f.data['phone_number']}, RequestContext(request))
 
-    keyword = "".join(random.choice(string.lowercase) for i in range(1,4))
-    form = WallForm(data={'sms_keyword': keyword})
+    phone_number = _get_phone_number() 
+    form = WallForm(data={'phone_number': phone_number})
     return render_to_response(
     "create_wall.html",
-        {"form": form, "sms_keyword": keyword}, RequestContext(request))
+        {"form": form, "phone_number": phone_number}, RequestContext(request))

@@ -30,7 +30,7 @@ class PubnubListener(StreamListener):
             wall = Wall.objects.filter(hashtag__iexact=tweet.group(1))
             if len(wall) > 0:
                 self.pubnub.publish({
-                    'channel' : wall[0].sms_keyword,
+                    'channel' : wall[0].hashtag,
                     'message' : {
                         'message' : str(message['text'])
                     }

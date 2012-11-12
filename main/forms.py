@@ -28,3 +28,4 @@ class WallForm(forms.ModelForm):
         widgets = {
             'sms_keyword' : forms.HiddenInput
         }
+        exclude = ('phone_number',)

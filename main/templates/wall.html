@@ -18,7 +18,7 @@ origin="pubsub.pubnub.com" id="pubnub"></div>
 <script>
 (function() {
     PUBNUB.subscribe( {
-        channel    : "{{ wall.sms_keyword }}",             
+        channel    : "{{ wall.hashtag }}",
         callback   : function(message) {
             $('.messages').append("<p>" + message['message'] + "</p>");
             $('html, body').animate({
