@@ -10,12 +10,8 @@ PUBLISH_KEY = "pub-8a8223f4-631c-4484-a118-2b01232307cc"
 SUBSCRIBE_KEY = "sub-e754ed6b-133d-11e2-91f2-b58e6c804094"
 SECRET = "sec-ZjcxZGVjNDAtZWQyMC00MGZmLTg1Y2MtNmJkNGE3YTJiYjlj"
 
-# Go to http://dev.twitter.com and create an app. 
-# The consumer key and secret will be generated for you after
 TWITTER_CONSUMER_KEY = environ.get("TWITTER_CONSUMER_KEY", "")
 TWITTER_CONSUMER_SECRET = environ.get("TWITTER_CONSUMER_SECRET", "")
-# After the step above, you will be redirected to your app's page.
-# Create an access token under the the "Your access token" section
 TWITTER_ACCESS_TOKEN = environ.get("TWITTER_ACCESS_TOKEN", "")
 TWITTER_ACCESS_TOKEN_SECRET = environ.get("TWITTER_ACCESS_TOKEN_SECRET", "")
 
