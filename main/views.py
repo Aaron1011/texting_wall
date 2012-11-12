@@ -30,19 +30,19 @@ def sms_message(request):
     SECRET = "sec-ZjcxZGVjNDAtZWQyMC00MGZmLTg1Y2MtNmJkNGE3YTJiYjlj"
 
     twilio_message = request.POST['Body']
-    phone_number = request.POST['To']
+    phone_number = request.POST['From']
 
-    sms_codes, body = _split_message(twilio_message)
-    if sms_codes != None and body != None:
+    hashtag, body = _split_message(twilio_message)
+    if hashtag != None and body != None:
         message = models.Message()
         message.message = body
-        message.phone_number = request.POST['From']
-        message.wall = models.Wall.objects.get(phone_number=phone_number)
+        message.phone_number = phone_number
+        message.wall = models.Wall.objects.get(hashtag=hashtag)
         message.save()
 
         pubnub = Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY, SECRET, False)
         info = pubnub.publish({
-            'channel' : message.wall.hashtag,
+            'channel' : hashtag,
             'message' : {
                 'message' : body
             }
