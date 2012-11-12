@@ -55,8 +55,7 @@ def _split_message(message):
     wall = models.Wall.objects.all()
     if len(wall) == 1:
         hashtag = str(wall[0].hashtag)
-        message = message.replace(hashtag, '').replace('  ', ' ')
-        return keyword, message
+        return hashtag, message
 
 def create_account(request):
     form = local_forms.UserCreation()
