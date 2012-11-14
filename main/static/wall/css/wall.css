@@ -10,6 +10,7 @@ p.instructions {
     padding:10px;
     top:0px;
     left:0px;
+    padding-bottom:25px;
 }
 
 p.footer {
@@ -23,4 +24,6 @@ p.footer {
 .messages {
     margin-top:60px;
     margin-bottom:50px;
+    text-align:center;
 }
+
