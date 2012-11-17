@@ -13,14 +13,20 @@ import forms as local_forms
 import models
 from django.contrib.auth.decorators import login_required
 from django_twilio.decorators import twilio_view
+from django.conf import settings
+from django_twilio.client import twilio_client
 import random, string, re
 from Pubnub import Pubnub
+from django.views.decorators.csrf import csrf_exempt
+import datetime
 
 def index(request):
     return render_to_response("index.html", RequestContext(request))
 @login_required(login_url='/login', redirect_field_name='/create_wall') 
 def display_wall(request, id):
-    wall = models.Wall.objects.get(pk=id)
+    wall = models.Wall.objects.filter(pk=id)
+    if not wall:
+        return render_to_response("wall_404.html")
     return render_to_response("wall.html", {'wall': wall})
 
 @twilio_view
