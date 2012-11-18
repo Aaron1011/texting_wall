@@ -64,6 +64,7 @@ def sms_message(request):
 def _get_phone_number():
     if settings.DEBUG:
         return "6176005993"
+    return "6176005993" # Will be removed when deployed to other companies
     numbers = []
     for num in twilio_client.phone_numbers.iter():
         numbers.append(num)
