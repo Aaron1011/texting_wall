@@ -11,7 +11,7 @@ class Migration(SchemaMigration):
         # Adding model 'Wall'
         db.create_table('main_wall', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('hashtag', self.gf('django.db.models.fields.CharField')(default='svf', max_length=20)),
+            ('hashtag', self.gf('django.db.models.fields.CharField')(default='cjq', max_length=20)),
             ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['auth.User'])),
             ('phone_number', self.gf('django.db.models.fields.CharField')(max_length=20)),
         ))
@@ -85,7 +85,7 @@ class Migration(SchemaMigration):
         },
         'main.wall': {
             'Meta': {'object_name': 'Wall'},
-            'hashtag': ('django.db.models.fields.CharField', [], {'default': "'svf'", 'max_length': '20'}),
+            'hashtag': ('django.db.models.fields.CharField', [], {'default': "'cjq'", 'max_length': '20'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'phone_number': ('django.db.models.fields.CharField', [], {'max_length': '20'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['auth.User']"})
