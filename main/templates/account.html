@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Walls{% endblock %}
+
+{% block css %}
+.thumbnail {
+    margin-top:20px;
+}
+
+.info {
+    text-align:center;
+    font-size:50px;
+    padding-top:40px;
+}
+
+.buttons {
+    text-align:center;
+}
+{% endblock %}
+
+{% block content %}
+    <p class="info">Your walls</p>
+    <ul class="thumbnails">
+    {% for wall in walls %}
+        <li>
+            <div class="thumbnail">
+                <h6>{{ wall.created|date:"F j, o"}}</h6>
+                <p>{{ wall}}</p>
+                <p>Messages sent: {{ wall.message_set.all|length }}</p>
+                <a class="btn btn-primary" href="/messages/{{ wall.id}}/">View Messages</a>
+            </div>
+        </li>
+    {% endfor %}
+    </ul>
+    <div class="buttons">
+        <a class="btn btn-success btn-large" href="/create_wall/">Create Wall</a>
+    </div>
+{% endblock %}
