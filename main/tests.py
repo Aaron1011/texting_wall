@@ -9,6 +9,8 @@ from django.test import TestCase
 from main.views import _split_message
 from main.models import Wall
 from django.contrib.auth.models import User
+from django.conf import settings
+from os import environ
 class SMSTest(TestCase):
 
     def test_single_wall(self):
@@ -18,42 +20,35 @@ class SMSTest(TestCase):
 
         a = Wall()
         a.hashtag = "#abc"
-        a.sms_keyword = 'abc'
+        a.phone_number = '+11112223333'
         a.user = user
         a.save()
 
-        self.assertEquals(_split_message('This is a sentence'), ('abc', 'This is a sentence'))
+        self.assertEquals(_split_message('This is a sentence', ''), (a.hashtag, 'This is a sentence'))
        
 
-    def test_sms_keyword(self):
+    def test_phone_number(self):
+
         user = User.objects.create_user('Bob', 'Bob')
         user.save()
 
+        self.assertEquals(_split_message('Test message', '+12223334444'), (None, None))
 
         a = Wall()
         a.hashtag = "#abc"
-        a.sms_keyword = 'abc'
+        a.phone_number = "+11234567890"
         a.user = user
         a.save()
 
         b = Wall()
-        b.hashtah = "#qwe"
-        b.sms_keyword = 'qwe'
+        b.hashtag = "#qwe"
+        b.phone_number = "+11234567891"
         b.user = user
         b.save()
 
-        self.assertEquals(_split_message('abc Hello world'), ('abc', 'Hello world'))
-        self.assertEquals(_split_message('Hello abc world'), ('abc', 'Hello world'))
-        self.assertEquals(_split_message('Hello world abc'), ('abc', 'Hello world'))
+        self.assertEquals(_split_message('Hello world', a.phone_number), (a.hashtag, 'Hello world'))
+        self.assertEquals(_split_message('Hello world', b.phone_number), (b.hashtag, 'Hello world'))
+        self.assertEquals(_split_message('Hello world', '+12223334444'), (None, None))
 
-        a.sms_keyword = 'AbC'
-        a.save()
-
-        self.assertEquals(_split_message('Hello AbC world'), ('AbC', 'Hello world'))
-
-        a.sms_keyword = 'abC'
-        a.save()
-
-        self.assertEquals(_split_message('Hello world abC'), ('abC', 'Hello world'))
-        self.assertEquals(_split_message('This is a message'), (None, None))
-        self.assertEquals(_split_message('How are you'), (None, None))
+    def test_purchase_phone_number(self):
+        
