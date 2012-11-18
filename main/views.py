@@ -24,7 +24,7 @@ def index(request):
     return render_to_response("index.html", RequestContext(request))
 @login_required(login_url='/login', redirect_field_name='/create_wall') 
 def display_wall(request, id):
-    wall = models.Wall.objects.filter(pk=id)
+    wall = models.Wall.objects.filter(pk=id)[0]
     if not wall:
         return render_to_response("wall_404.html")
     return render_to_response("wall.html", {'wall': wall})
