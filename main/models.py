@@ -12,22 +12,24 @@ class Wall(models.Model):
     def __unicode__(self):
         return self.hashtag
 
-class Message(models.Model):
-    message = models.CharField(max_length=1024)
-    time_sent = models.DateTimeField(auto_now_add=True)
-    twitter_account = models.CharField(max_length=20, null=True)
-    phone_number = models.CharField(max_length=15, null=True)
-    wall = models.ForeignKey(Wall)
-
-    def __unicode__(self):
-        return self.message
-
 class MessageSender(models.Model):
     phone_number = models.CharField(max_length=20, null=True)
     twitter_username = models.CharField(max_length=20, null=True)
     name = models.CharField(max_length=30)
     image_url = models.URLField()
     fb_uid = models.IntegerField()
+
+class Message(models.Model):
+    message = models.CharField(max_length=1024)
+    time_sent = models.DateTimeField(auto_now_add=True)
+    twitter_account = models.CharField(max_length=20, null=True)
+    phone_number = models.CharField(max_length=15, null=True)
+    wall = models.ForeignKey(Wall)
+    sender = models.ForeignKey(MessageSender, null=True)
+
+    def __unicode__(self):
+        return self.message
+
 
 TRAFFIC_SOURCE = (
     ('BG', 'Blog'),
