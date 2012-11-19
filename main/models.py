@@ -17,7 +17,9 @@ class MessageSender(models.Model):
     twitter_username = models.CharField(max_length=20, null=True)
     name = models.CharField(max_length=30)
     image_url = models.URLField()
-    fb_uid = models.IntegerField()
+    fb_uid = models.IntegerField(null=True)
+    def __unicode__(self):
+        return self.name
 
 class Message(models.Model):
     message = models.CharField(max_length=1024)
