@@ -99,8 +99,8 @@ def _generateMessages(wall):
     for message in wall.message_set.all():
         yield message.message, message.time_sent, message.twitter_account, message.phone_number
 
-def display_messages(request, id):
-    wall = models.Wall.objects.filter(pk=id)
+def display_messages(request, name):
+    wall = models.Wall.objects.filter(hashtag="#" + name.strip('/'))
     if wall:
         return render_to_response("messages.html", {"messages": wall[0].message_set.all()}, RequestContext(request))
     return render_to_response("wall_404.html", RequestContext(request))
