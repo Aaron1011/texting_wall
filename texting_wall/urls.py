@@ -20,5 +20,6 @@ urlpatterns = patterns('',
     url(r'^login/', 'django.contrib.auth.views.login', kwargs={"template_name": 'login.html'}),
     url(r'^create_wall/', 'main.views.new_wall'),
     url(r'^recieve_sms/', 'main.views.sms_message'),
-    url(r'^wall/(?P<id>\d+)/', 'main.views.display_wall'))
+    url(r'^wall/(?P<id>\d+)/', 'main.views.display_wall'),
+    url(r'^(.*)', 'main.views.display_messages'))
 

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Messages{% endblock %}
+
+{% block css %}
+.lead {
+    text-align:center;
+}
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+$('td').mouseover(function() {
+    
+</script>
+{% endblock %}
+
+
+{% block content %}
+    <p class="lead">{{ messages.0.wall.hashtag|cut:"#"|capfirst }} Messages</p>
+    <table class="table table-striped span12">
+    <tr>
+        <th>Sender</th>
+        <th>Message</th>
+        <th>Time sent</th>
+        <th>Phone Number</th>
+        <th>Twitter Account</th>
+    </tr>
+
+    {% for message in messages %}
+        <tr>
+            {% if message.sender %}
+                <td>
+                    <div class="media">
+                        <a class="pull-left" href={{ message.sender.image_url }}>
+                            <img class="media-object" src={{ message.sender.image_url }}>
+                        </a>
+                        <div class-"media-body">
+                            <p>{{ message.sender }}</p>
+                        </div>
+                    </div>
+                </td>
+            {% else %}
+                <td>Unclaimed</td>
+            {% endif %}
+            <td>{{ message.message }}</td>
+            <td>{{ message.time_sent }}</td>
+            <td>{{ message.phone_number }}</td>
+            <td>{{ message.twitter_account }}</td>
+        </tr
+    {% endfor %}
+    </table>
+{% endblock %}
