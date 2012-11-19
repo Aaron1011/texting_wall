@@ -22,6 +22,13 @@ class Message(models.Model):
     def __unicode__(self):
         return self.message
 
+class MessageSender(models.Model):
+    phone_number = models.CharField(max_length=20, null=True)
+    twitter_username = models.CharField(max_length=20, null=True)
+    name = models.CharField(max_length=30)
+    image_url = models.URLField()
+    fb_uid = models.IntegerField()
+
 TRAFFIC_SOURCE = (
     ('BG', 'Blog'),
     ('FR', 'Friend'),
