@@ -22,4 +22,3 @@ urlpatterns = patterns('',
     url(r'^recieve_sms/', 'main.views.sms_message'),
     url(r'^wall/(?P<id>\d+)/', 'main.views.display_wall'),
     url(r'^(.*)', 'main.views.display_messages'))
-

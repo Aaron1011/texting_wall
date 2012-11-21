@@ -7,15 +7,22 @@
 }
 {% endblock %}
 
-{% block javascript %}
-<script type="text/javascript">
-$('td').mouseover(function() {
-    
-</script>
-{% endblock %}
-
-
 {% block content %}
+    
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Modal header</h3>
+  </div>
+  <div class="modal-body">
+    <p>One fine body…</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary">Save changes</button>
+  </div>
+</div>
+
     <p class="lead">{{ messages.0.wall.hashtag|cut:"#"|capfirst }} Messages</p>
     <table class="table table-striped span12">
     <tr>
@@ -40,7 +47,9 @@ $('td').mouseover(function() {
                     </div>
                 </td>
             {% else %}
-                <td>Unclaimed</td>
+                <td>
+                    <a href="#myModal" class="btn" data-toggle="modal">Claim Message</a>
+                </td>
             {% endif %}
             <td>{{ message.message }}</td>
             <td>{{ message.time_sent }}</td>
