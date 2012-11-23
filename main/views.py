@@ -28,7 +28,7 @@ def index(request):
 def display_wall(request, id):
     wall = models.Wall.objects.filter(pk=id)[0]
     if not wall:
-        return render_to_response("wall_404.html")
+        return render_to_response("404.html")
     return render_to_response("wall.html", {'wall': wall})
 
 @twilio_view
@@ -102,8 +102,8 @@ def _generateMessages(wall):
 def display_messages(request, name):
     wall = models.Wall.objects.filter(hashtag="#" + name.strip('/'))
     if wall:
-        return render_to_response("messages.html", {"messages": wall[0].message_set.all()}, RequestContext(request))
-    return render_to_response("wall_404.html", RequestContext(request))
+        return render_to_response("messages.html", {"messages": wall[0].message_set.all(), 'user': request.user}, RequestContext(request))
+    return render_to_response("404.html", RequestContext(request))
 
 def create_account(request):
     form = local_forms.UserCreation()
