@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.conf import settings
+from django.views.generic.simple import redirect_to
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
@@ -21,4 +22,5 @@ urlpatterns = patterns('',
     url(r'^create_wall/', 'main.views.new_wall'),
     url(r'^recieve_sms/', 'main.views.sms_message'),
     url(r'^wall/(?P<id>\d+)/', 'main.views.display_wall'),
-    url(r'^(.*)', 'main.views.display_messages'))
+    url(r'^messages/(?P<name>\w+)/', 'main.views.display_messages'),
+    url(r'^uucmthanks/', redirect_to, {'url': '/messages/uucmthanks/'}))
