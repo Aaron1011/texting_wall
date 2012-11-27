@@ -18,18 +18,52 @@ from django_twilio.client import twilio_client
 import random, string, re
 from Pubnub import Pubnub
 from django.views.decorators.csrf import csrf_exempt
+from main.models import Message, MessageSender
 import datetime
+import tweepy
 
 def index(request):
     if request.user.is_authenticated():
         return render_to_response("account.html", {"walls": list(request.user.wall_set.all())}, RequestContext(request))
     return render_to_response("index.html", RequestContext(request))
-@login_required(login_url='/login', redirect_field_name='/create_wall') 
+
+@login_required(login_url='/login', redirect_field_name='/create_wall')
 def display_wall(request, id):
     wall = models.Wall.objects.filter(pk=id)[0]
     if not wall:
         return render_to_response("404.html")
     return render_to_response("wall.html", {'wall': wall})
+
+def twitter_oauth(request):
+    print settings.OAUTH_CALLBACK
+    auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET, settings.OAUTH_CALLBACK)
+    if request.session.has_key('request_token'):
+        token = request.session['request_token']
+        del request.session['request_token']
+        auth.set_request_token(token[0], token[1])
+        verifier = request.GET['oauth_verifier']
+        auth.get_access_token(verifier)
+
+        api = tweepy.API(auth)
+        user = api.me()
+
+        sender = MessageSender()
+        sender.name = user.name
+        sender.twitter_username = user.screen_name
+        sender.image_url = user.profile_image_url
+        sender.save()
+
+        for message in Message.objects.filter(twitter_account=sender.twitter_username):
+            message.sender = sender
+            message.save()
+
+        if request.session.has_key('message_page'):
+            return HttpResponseRedirect(request.session['message_page'])
+        return HttpResponseRedirect('/')
+    print settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET, settings.OAUTH_CALLBACK
+    auth_url = auth.get_authorization_url()
+    request.session['request_token'] = (auth.request_token.key, auth.request_token.secret)
+    return HttpResponseRedirect(auth_url)
 
 @twilio_view
 def sms_message(request):
@@ -102,6 +136,7 @@ def _generateMessages(wall):
 def display_messages(request, name):
     wall = models.Wall.objects.filter(hashtag="#" + name.strip('/'))
     if wall:
+        request.session['message_page'] = request.get_full_path()
         return render_to_response("messages.html", {"messages": wall[0].message_set.all(), 'user': request.user}, RequestContext(request))
     return render_to_response("404.html", RequestContext(request))
 

@@ -18,7 +18,7 @@ TWITTER_ACCESS_TOKEN_SECRET = environ.get("TWITTER_ACCESS_TOKEN_SECRET", "")
 TWILIO_ACCOUNT_SID = environ.get("TWILIO_ACCOUNT_SID", "")
 TWILIO_AUTH_TOKEN = environ.get("TWILIO_AUTH_TOKEN", "")
 
-
+OAUTH_CALLBACK = environ.get("OAUTH_CALLBACK","")
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
