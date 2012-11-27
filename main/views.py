@@ -5,7 +5,7 @@ from django.contrib.auth import forms as auth_forms
 from django.core.context_processors import csrf
 from django.contrib.auth.models import User
 from django.template import RequestContext
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
 from django.http import HttpResponse, HttpResponseRedirect
 from forms import WallForm
@@ -125,6 +125,9 @@ def create_account(request):
 def finish(request):
     return HttpResponse("Login Successfull!")
 
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect('/')
 
 @login_required(login_url="/login", redirect_field_name='/create_wall/' )
 def new_wall(request):
