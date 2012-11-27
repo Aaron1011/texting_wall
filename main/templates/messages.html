@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 {% block title %}Messages{% endblock %}
 
 {% block css %}
@@ -9,13 +10,31 @@
 
 {% block content %}
     
-    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div id="smsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Modal header</h3>
+    <h3 id="myModalLabel">Claim this Message</h3>
   </div>
   <div class="modal-body">
-    <p>One fine body…</p>
+    <p>To verify that you sent this message, please enter in the phone number you used to send it below:</p>
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+    <button class="btn btn-primary">Save changes</button>
+  </div>
+</div>
+
+<div id="tweetModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Claim this Message</h3>
+  </div>
+  <div class="modal-body">
+    <p>Please log in with your Twitter account below to verify that you sent this message:</p>
+    <a href="/authorize">
+        <img src="{% static "messages/img/sign-in-with-twitter-gray.png" %}">
+    </a>
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
@@ -24,6 +43,7 @@
 </div>
 
     <p class="lead">{{ messages.0.wall.hashtag|cut:"#"|capfirst }} Messages</p>
+
     <table class="table table-striped span12">
     <tr>
         <th>Sender</th>
@@ -48,7 +68,13 @@
                 </td>
             {% else %}
                 <td>
-                    <a href="#myModal" class="btn" data-toggle="modal">Claim Message</a>
+                    {% if user.is_superuser %}
+                        {% if  message.phone_number %}
+                            <a href="#smsModal" class="btn" data-toggle="modal">Claim Message</a>
+                        {% else %}
+                            <a href="#tweetModal" class="btn" data-toggle="modal">Claim Message</a>
+                        {% endif %}
+            {% endif %}
                 </td>
             {% endif %}
             <td>{{ message.message }}</td>
