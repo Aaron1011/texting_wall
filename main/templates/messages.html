@@ -49,7 +49,6 @@
         <th>Sender</th>
         <th>Message</th>
         <th>Time sent</th>
-        <th>Phone Number</th>
         <th>Twitter Account</th>
     </tr>
 
@@ -79,7 +78,6 @@
             {% endif %}
             <td>{{ message.message }}</td>
             <td>{{ message.time_sent }}</td>
-            <td>{{ message.phone_number }}</td>
             <td>{{ message.twitter_account }}</td>
         </tr
     {% endfor %}
