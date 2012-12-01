@@ -18,7 +18,7 @@ from django_twilio.client import twilio_client
 import random, string, re
 from Pubnub import Pubnub
 from django.views.decorators.csrf import csrf_exempt
-from main.models import Message, MessageSender
+from main.models import Message, MessageSender, Wall
 import datetime
 import tweepy
 
@@ -34,8 +34,7 @@ def display_wall(request, id):
         return render_to_response("404.html")
     return render_to_response("wall.html", {'wall': wall})
 
-def twitter_oauth(request):
-    print settings.OAUTH_CALLBACK
+def twitter_oauth(request, id=None):
     auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET, settings.OAUTH_CALLBACK)
     if request.session.has_key('request_token'):
         token = request.session['request_token']
@@ -53,16 +52,17 @@ def twitter_oauth(request):
         sender.image_url = user.profile_image_url
         sender.save()
 
-        for message in Message.objects.filter(twitter_account=sender.twitter_username):
+        wall = Wall.objects.get(pk=request.session['wall_id'])
+        for message in wall.message_set.filter(twitter_account=sender.twitter_username):
             message.sender = sender
             message.save()
 
         if request.session.has_key('message_page'):
             return HttpResponseRedirect(request.session['message_page'])
         return HttpResponseRedirect('/')
-    print settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET, settings.OAUTH_CALLBACK
     auth_url = auth.get_authorization_url()
     request.session['request_token'] = (auth.request_token.key, auth.request_token.secret)
+    request.session['wall_id'] = id
     return HttpResponseRedirect(auth_url)
 
 @twilio_view
@@ -136,6 +136,7 @@ def _generateMessages(wall):
 def display_messages(request, name):
     wall = models.Wall.objects.filter(hashtag="#" + name.strip('/'))
     if wall:
+        print request.get_full_path()
         request.session['message_page'] = request.get_full_path()
         return render_to_response("messages.html", {"messages": wall[0].message_set.all(), 'user': request.user}, RequestContext(request))
     return render_to_response("404.html", RequestContext(request))
