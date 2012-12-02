@@ -24,15 +24,6 @@ content="WnWrzryX1bcHO-Oahx1XMRTxUAU5r7xSB_iRsC5WjPY" />
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
-</head>
-
-<body>
-{% block content%} 
-{% endblock %}
-<script src="http://code.jquery.com/jquery-latest.js"></script>
-<script type="text/javascript" src="{% static "bootstrap/js/bootstrap.js" %}"></script>
-
-{% block javascript %}
 {% if GOOGLE_ANALYTICS %}
 <script type="text/javascript">
 
@@ -51,6 +42,16 @@ s.parentNode.insertBefore(ga, s);
 
 </script>
 {% endif %}
+</head>
+
+<body>
+{% block content%} 
+{% endblock %}
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript" src="{% static "bootstrap/js/bootstrap.js" %}"></script>
+
+{% block javascript %}
+
 {% endblock %}
 </body>
 
