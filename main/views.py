@@ -63,6 +63,7 @@ def twitter_oauth(request, id=None):
     auth_url = auth.get_authorization_url()
     request.session['request_token'] = (auth.request_token.key, auth.request_token.secret)
     request.session['wall_id'] = id
+    request.session.modified = True
     return HttpResponseRedirect(auth_url)
 
 @twilio_view

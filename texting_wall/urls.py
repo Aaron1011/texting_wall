@@ -24,5 +24,7 @@ urlpatterns = patterns('',
     url(r'^recieve_sms/', 'main.views.sms_message'),
     url(r'^wall/(?P<id>\d+)/', 'main.views.display_wall'),
     url(r'^messages/(?P<name>\w+)/', 'main.views.display_messages'),
-    url(r'^authorize/', 'main.views.twitter_oauth'),
-    url(r'^uucmthanks/', redirect_to, {'url': '/messages/uucmthanks/'}))
+    url(r'^authorize/(?P<id>\d+)/', 'main.views.twitter_oauth'),
+    url(r'^authorize$', 'main.views.twitter_oauth'),
+    url(r'^uucmthanks/', redirect_to, {'url': '/messages/uucmthanks/'}),
+    url(r'^verify_sms/', 'main.views.verify_sms'))

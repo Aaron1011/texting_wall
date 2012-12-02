@@ -32,7 +32,7 @@
   </div>
   <div class="modal-body">
     <p>Please log in with your Twitter account below to verify that you sent this message:</p>
-    <a href="/authorize/{{ messages.0.wall.id }}">
+    <a href={% url main.views.twitter_oauth id=messages.0.wall.id %}>
         <img src="{% static "messages/img/sign-in-with-twitter-gray.png" %}">
     </a>
   </div>
@@ -44,7 +44,7 @@
 
     <p class="lead">{{ messages.0.wall.hashtag|cut:"#"|capfirst }} Messages</p>
 
-    <table class="table table-striped span12">
+    <table class="table span12">
     <tr>
         <th>Sender</th>
         <th>Message</th>
