@@ -6,6 +6,15 @@ from os import environ
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
+"django.core.context_processors.debug",
+"django.core.context_processors.i18n",
+"django.core.context_processors.media",
+"django.core.context_processors.static",
+"django.core.context_processors.tz",
+"django.contrib.messages.context_processors.messages",
+"main.context_processors.analytics")
+
 PUBLISH_KEY = "pub-8a8223f4-631c-4484-a118-2b01232307cc"
 SUBSCRIBE_KEY = "sub-e754ed6b-133d-11e2-91f2-b58e6c804094"
 SECRET = "sec-ZjcxZGVjNDAtZWQyMC00MGZmLTg1Y2MtNmJkNGE3YTJiYjlj"
@@ -19,6 +28,8 @@ TWILIO_ACCOUNT_SID = environ.get("TWILIO_ACCOUNT_SID", "")
 TWILIO_AUTH_TOKEN = environ.get("TWILIO_AUTH_TOKEN", "")
 
 OAUTH_CALLBACK = environ.get("OAUTH_CALLBACK","")
+
+GOOGLE_ANALYTICS = False
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
@@ -187,4 +198,4 @@ if env == "production":
     STATIC_URL= 'http://s3.amazonaws.com/textingwall/'
     EMAIL_BACKEND = 'django_ses.SESBackend'
     INSTALLATION = "production"
-
+    GOOGLE_ANALYTICS = True
