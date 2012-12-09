@@ -6,3 +6,4 @@ gunicorn==0.14.6
 django-storages==1.1.5
 South==0.7.6
 django-twilio==0.4
+django-dajaxice==0.5.4

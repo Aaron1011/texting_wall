@@ -102,6 +102,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'dajaxice.finders.DajaxiceFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
@@ -111,7 +112,7 @@ SECRET_KEY = '+303s__l2ataaceln$qfb7sp5qn%j5d&amp;_hrl_ijf^1+#dtduga'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+   'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -143,6 +144,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'main',
     'south',
+    'dajaxice',
 
 
     # Uncomment the next line to enable the admin:
