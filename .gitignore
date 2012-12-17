@@ -7,3 +7,4 @@ venv
 .coverage
 *cov/
 setup_env.sh
+.ropeproject
