@@ -3,3 +3,4 @@ tweepy==1.11
 South==0.7.6
 django-twilio==0.4
 django-dajaxice==0.5.4
+PIL==1.1.7
