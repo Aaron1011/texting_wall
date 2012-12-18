@@ -1,9 +1,6 @@
 # Create your views here.
 from django.shortcuts import render_to_response
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import forms as auth_forms
-from django.core.context_processors import csrf
-from django.contrib.auth.models import User
 from django.template import RequestContext
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
@@ -15,17 +12,17 @@ from django.contrib.auth.decorators import login_required
 from django_twilio.decorators import twilio_view
 from django.conf import settings
 from django_twilio.client import twilio_client
-import random, string, re
 from Pubnub import Pubnub
-from django.views.decorators.csrf import csrf_exempt
 from main.models import Message, MessageSender, Wall
-import datetime
 import tweepy
+import json
+
 
 def index(request):
     if request.user.is_authenticated():
         return render_to_response("account.html", {"walls": list(request.user.wall_set.all())}, RequestContext(request))
     return render_to_response("index.html", RequestContext(request))
+
 
 @login_required(login_url='/login', redirect_field_name='/create_wall')
 def display_wall(request, id):
@@ -34,9 +31,10 @@ def display_wall(request, id):
         return render_to_response("404.html")
     return render_to_response("wall.html", {'wall': wall})
 
+
 def twitter_oauth(request, id=None):
     auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET, settings.OAUTH_CALLBACK)
-    if request.session.has_key('request_token'):
+    if 'request_token' in request.session:
         token = request.session['request_token']
         del request.session['request_token']
         auth.set_request_token(token[0], token[1])
@@ -53,18 +51,28 @@ def twitter_oauth(request, id=None):
         sender.save()
 
         wall = Wall.objects.get(pk=request.session['wall_id'])
-        for message in wall.message_set.filter(twitter_account=sender.twitter_username):
-            message.sender = sender
-            message.save()
+        message = Message.objects.get(pk=request.session['message_id'])
+        message.sender = sender
+        message.wall = wall
+        message.save()
 
-        if request.session.has_key('message_page'):
+        if request.session['claimall']:
+            for message in wall.message_set.filter(twitter_account=sender.twitter_username):
+                message.sender = sender
+                message.wall = wall
+                message.save()
+
+        if 'message_page' in request.session:
             return HttpResponseRedirect(request.session['message_page'])
         return HttpResponseRedirect('/')
     auth_url = auth.get_authorization_url()
     request.session['request_token'] = (auth.request_token.key, auth.request_token.secret)
     request.session['wall_id'] = id
+    request.session['claimall'] = json.loads(request.GET.get('claimall'))
+    request.session['message_id'] = request.GET.get('message')
     request.session.modified = True
     return HttpResponseRedirect(auth_url)
+
 
 @twilio_view
 def sms_message(request):

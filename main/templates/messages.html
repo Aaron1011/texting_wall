@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
 {% block title %}Messages{% endblock %}
-
 {% block css %}
 .lead {
     text-align:center;
@@ -32,25 +31,19 @@
   </div>
   <div class="modal-body">
     <p>Please log in with your Twitter account below to verify that you sent this message:</p>
-    <a href={% url main.views.twitter_oauth id=messages.0.wall.id %}>
+    <a id="twitterlogin" href="{% url main.views.twitter_oauth id=messages.0.wall.id %}?">
         <img src="{% static "messages/img/sign-in-with-twitter-gray.png" %}">
-    </a>
+    </a><br />
+    Claim all other messages sent with my Twitter account <input type="checkbox" id="claimall" />
   </div>
   <div class="modal-footer">
     <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary">Save changes</button>
   </div>
 </div>
 
     <p class="lead">{{ messages.0.wall.hashtag|cut:"#"|capfirst }} Messages</p>
 
     <table class="table span12">
-    <tr>
-        <th>Sender</th>
-        <th>Message</th>
-        <th>Time sent</th>
-        <th>Twitter Account</th>
-    </tr>
 
     {% for message in messages %}
         <tr>
@@ -71,15 +64,66 @@
                         {% if  message.phone_number %}
                             <a href="#smsModal" class="btn" data-toggle="modal">Claim Message</a>
                         {% else %}
-                            <a href="#tweetModal" class="btn" data-toggle="modal">Claim Message</a>
+                        <a class="btn tweet" data-toggle="modal" data-modal="#tweetModal" data-message={{ message.id }}>Add name/photo</a>
                         {% endif %}
             {% endif %}
                 </td>
             {% endif %}
             <td>{{ message.message }}</td>
-            <td>{{ message.time_sent }}</td>
-            <td>{{ message.twitter_account }}</td>
         </tr
     {% endfor %}
     </table>
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+function verify_callback(data) {
+    if (!data['status']) {
+        $("#modalError").show();
+    }
+    else {
+        $("#modalError").hide();
+        $("#checkmark").show();
+        $("#dataForm").show(1000);
+    }
+
+}
+
+function build_url () {
+    for (param in twitterurl) {
+        $('#twitterlogin').attr('href', function (i, val) {
+            return val + param + '=' + twitterurl[param] + '&';
+        })
+    }
+}
+
+$('button:contains("Verify")').click(function() {
+    output = Dajaxice.main.verify_sms(verify_callback, {'message_id': $('#message_id').val(), 'areacode': $('input[name="areacode"]').val(), 'first': $('input[name="first"]').val(), 'second': $('input[name="second"]').val()})
+})
+
+$('.tweet').click(function() {
+    twitterurl.message = $(this).attr('data-message');
+    $('#tweetModal').modal();
+})
+
+$('.sms').click(function() {
+    var message = $(".message_id");
+    message.val($(this).attr('data-message'));
+    $('#smsModal').modal();
+    return false;
+})
+    
+$('#claimall').change(function () {
+    if ($(this).is(':checked')) {
+        twitterurl.claimall = true;
+    }
+    else {twitterurl.claimall = false;}
+})
+
+$('#twitterlogin').click(function() {
+    build_url();
+})
+
+twitterurl = {claimall:false};
+</script>
 {% endblock %}
