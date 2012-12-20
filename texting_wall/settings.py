@@ -199,9 +199,6 @@ if env == "production":
     AWS_ACCESS_KEY_ID = environ.get("AWS_ACCESS_KEY_ID", "")
     AWS_SECRET_ACCESS_KEY = environ.get("AWS_SECRET_ACCESS_KEY", "")
 
-    from S3 import CallingFormat
-    AWS_CALLING_FORMAT = CallingFormat.SUBDOMAIN
-
     TWILIO_ACCOUNT_SID = environ.get("TWILIO_ACCOUNT_SID", "")
     TWILIO_AUTH_TOKEN = environ.get("TWILIO_AUTH_TOKEN", "")
     STATIC_URL = 'http://s3.amazonaws.com/textingwall/'
