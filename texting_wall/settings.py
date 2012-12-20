@@ -7,13 +7,14 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
-"django.core.context_processors.debug",
-"django.core.context_processors.i18n",
-"django.core.context_processors.media",
-"django.core.context_processors.static",
-"django.core.context_processors.tz",
-"django.contrib.messages.context_processors.messages",
-"main.context_processors.analytics")
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.contrib.messages.context_processors.messages",
+    "main.context_processors.analytics"
+)
 
 PUBLISH_KEY = "pub-8a8223f4-631c-4484-a118-2b01232307cc"
 SUBSCRIBE_KEY = "sub-e754ed6b-133d-11e2-91f2-b58e6c804094"
@@ -27,7 +28,7 @@ TWITTER_ACCESS_TOKEN_SECRET = environ.get("TWITTER_ACCESS_TOKEN_SECRET", "")
 TWILIO_ACCOUNT_SID = environ.get("TWILIO_ACCOUNT_SID", "")
 TWILIO_AUTH_TOKEN = environ.get("TWILIO_AUTH_TOKEN", "")
 
-OAUTH_CALLBACK = environ.get("OAUTH_CALLBACK","")
+OAUTH_CALLBACK = environ.get("OAUTH_CALLBACK", "")
 
 GOOGLE_ANALYTICS = False
 ADMINS = (
@@ -39,7 +40,7 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'db.sqlite',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
@@ -73,12 +74,13 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = '/media/'
+
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://media.lawrence.com/media/", "http://example.com/media/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -103,7 +105,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'dajaxice.finders.DajaxiceFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -112,11 +113,11 @@ SECRET_KEY = '+303s__l2ataaceln$qfb7sp5qn%j5d&amp;_hrl_ijf^1+#dtduga'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-   'django.template.loaders.eggs.Loader',
+    'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
-	'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -142,6 +143,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'main',
     'south',
     'dajaxice',
@@ -188,16 +190,20 @@ if env == "production":
     DEBUG = False
     INSTALLED_APPS += ('gunicorn', "storages", "django_twilio",)
     import dj_database_url
-    DATABASES['default'] =  dj_database_url.config()
+    DATABASES['default'] = dj_database_url.config()
 
     STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
 
     AWS_STORAGE_BUCKET_NAME = environ.get("AWS_STORAGE_BUCKET_NAME", "")
     AWS_ACCESS_KEY_ID = environ.get("AWS_ACCESS_KEY_ID", "")
     AWS_SECRET_ACCESS_KEY = environ.get("AWS_SECRET_ACCESS_KEY", "")
+
+    from S3 import CallingFormat
+    AWS_CALLING_FORMAT = CallingFormat.SUBDOMAIN
+
     TWILIO_ACCOUNT_SID = environ.get("TWILIO_ACCOUNT_SID", "")
     TWILIO_AUTH_TOKEN = environ.get("TWILIO_AUTH_TOKEN", "")
-    STATIC_URL= 'http://s3.amazonaws.com/textingwall/'
-    EMAIL_BACKEND = 'django_ses.SESBackend'
+    STATIC_URL = 'http://s3.amazonaws.com/textingwall/'
     INSTALLATION = "production"
     GOOGLE_ANALYTICS = True

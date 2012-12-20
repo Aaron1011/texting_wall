@@ -86,7 +86,7 @@ def sms_message(request):
 
     hashtag, body = _split_message(twilio_message, incoming_phone_number)
     print hashtag, body
-    if hashtag != None and body != None:
+    if hashtag is not None and body is not None:
         message = models.Message()
         message.message = body
         message.phone_number = phone_number
@@ -95,19 +95,20 @@ def sms_message(request):
 
         pubnub = Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY, SECRET, False)
         info = pubnub.publish({
-            'channel' : hashtag,
-            'message' : {
-                'message' : body
+            'channel': hashtag,
+            'message': {
+                'message': body
             }
         })
         print info
         return HttpResponse("Success!")
     return HttpResponse("Error")
 
+
 def _get_phone_number():
     if settings.DEBUG:
         return "6176005993"
-    return "6176005993" # Will be removed when deployed to other companies
+    return "6176005993"  # Will be removed when deployed to other companies
     numbers = []
     for num in twilio_client.phone_numbers.iter():
         numbers.append(num)
@@ -117,6 +118,7 @@ def _get_phone_number():
         except ValueError:
             pass
     return numbers[0]
+
 
 def _split_message(message, phone_number):
     walls = models.Wall.objects.all()
@@ -129,26 +131,31 @@ def _split_message(message, phone_number):
         return None, None
     return wall.hashtag, message
 
-def _purchase_phone_number():
+
+def _purchase_phone_number(request):
     for area in settings.AREA_CODES:
         numbers = twilio_client.phone_numbers.search(area_code=area)
         if numbers:
             numbers[0].purchase()
             break
-    numbers[0].update(sms_method='POST', sms_url=build_absolute_uri('/recieve_sms'))
+    numbers[0].update(sms_method='POST', sms_url='/recieve_sms')
     return numbers[0]
+
 
 def _generateMessages(wall):
     for message in wall.message_set.all():
         yield message.message, message.time_sent, message.twitter_account, message.phone_number
 
+
 def display_messages(request, name):
     wall = models.Wall.objects.filter(hashtag="#" + name.strip('/'))
+    form = local_forms.UploadImageForm()
     if wall:
         print request.get_full_path()
         request.session['message_page'] = request.get_full_path()
-        return render_to_response("messages.html", {"messages": wall[0].message_set.all(), 'user': request.user}, RequestContext(request))
+        return render_to_response("messages.html", {"messages": wall[0].message_set.all(), 'user': request.user, 'form': form}, RequestContext(request))
     return render_to_response("404.html", RequestContext(request))
+
 
 def create_account(request):
     form = local_forms.UserCreation()
@@ -156,25 +163,27 @@ def create_account(request):
         form = UserCreationForm(data=request.POST)
         if form.is_valid():
             form.save()
-            user = authenticate(username=form.cleaned_data["username"],
-                            password=form.cleaned_data["password1"])
-            auth_login(request,user)
+            user = authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["password1"])
+            auth_login(request, user)
             return render_to_response('finish.html')
         return render_to_response(
-            "create_account.html",
-                { "form": form }, RequestContext(request))
+            "create_account.html", {"form": form}, RequestContext(request))
     else:
         return render_to_response(
-    "create_account.html",
-        { "form": form }, RequestContext(request))
+            "create_account.html",
+            {"form": form}, RequestContext(request))
+
+
 def finish(request):
     return HttpResponse("Login Successfull!")
+
 
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
 
-@login_required(login_url="/login", redirect_field_name='/create_wall/' )
+
+@login_required(login_url="/login", redirect_field_name='/create_wall/')
 def new_wall(request):
     if request.POST:
         f = WallForm(data=request.POST)
@@ -187,14 +196,41 @@ def new_wall(request):
         else:
             print f.errors
             return render_to_response(
-            "create_wall.html",
+                "create_wall.html",
                 {"form": f, "phone_number": f.data['phone_number']}, RequestContext(request))
 
     phone_number = _get_phone_number()
     #if not phone_number:
-        #phone_number = _purchase_phone_number()
+        #phone_number = _purchase_phone_number(request)
     print "Phone number: " + phone_number
     form = WallForm(data={'phone_number': phone_number})
     return render_to_response(
-    "create_wall.html",
+        "create_wall.html",
         {"form": form, "phone_number": phone_number}, RequestContext(request))
+
+
+def verify_sms(request):
+    message = Message.objects.get(pk=request.POST['id'])
+    imageform = local_forms.UploadImageForm(request.POST, request.FILES)
+    if imageform.is_valid():
+        if message.phone_number == "+1" + request.POST['areacode'] + request.POST['first'] + request.POST['second']:
+            photo = imageform.cleaned_data['photo']
+
+            sender = MessageSender()
+            sender.phone_number = message.phone_number
+            sender.name = imageform.cleaned_data['name']
+            sender.image.save(photo.name, photo)
+            sender.image_url = sender.image.url
+            sender.save()
+
+            message.sender = sender
+            message.save()
+
+            if imageform.claimall:
+                for othermessage in Message.objects.get(phone_number=message.phone_number):
+                    othermessage.sender = sender
+                    othermessage.save()
+    else:
+        print imageform.errors
+
+    return HttpResponseRedirect('/messages/' + str(Wall.objects.get(message=request.POST['id'])).strip("#"))

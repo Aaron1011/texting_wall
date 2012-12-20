@@ -8,19 +8,48 @@
 {% endblock %}
 
 {% block content %}
-    
+
 <div id="smsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
+    <div class="alert alert-error hide" id="modalError">
+        <h5>The phone number you entered doesn't appear to be valid for this message. Double check that you have correctly typed in the number you used to send this message</h5>
+    </div>
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
     <h3 id="myModalLabel">Claim this Message</h3>
   </div>
   <div class="modal-body">
     <p>To verify that you sent this message, please enter in the phone number you used to send it below:</p>
+    <div class="row">
+        <div class="input-prepend input-append span2">
+            <span class="add-on">(</span>
+            <input name="areacode" class="span1" id="appendedPrependedInput" form="userdata" maxlength="3" type="text">
+            <span class="add-on">)</span>
+        </div>
+        <input name="first" class="span1" form="userdata" maxlength="3" type="text">
+        <input name="second" class="span1" form="userdata" maxlength="4" type="text">
+        <input type="hidden" name="id" id="class" value="">
+        <img class="offset1 hide" id="checkmark" src="{% static "messages/img/checkmark.png" %}"><br/>
+        <button class="btn btn-primary span1">Verify</button>
 
+    </div>
+
+    <div class="hide" id="dataForm">
+        <h3>Step Two:</h3>
+        <h5>Enter in your name and upload a photo that will appear next to your message</h5>
+
+        <form enctype="multipart/form-data" id="userdata" action="{% url main.views.verify_sms %}" method="POST">{% csrf_token %}
+            <table>
+                {{ form.as_table }}
+            </table>
+            <input type="hidden" name="id" id="message_id" value="">
+            <input type="submit" class="btn">
+        </form>
+
+    </div>
   </div>
+
   <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary">Save changes</button>
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
   </div>
 </div>
 
@@ -62,7 +91,7 @@
                 <td>
                     {% if user.is_superuser %}
                         {% if  message.phone_number %}
-                            <a href="#smsModal" class="btn" data-toggle="modal">Claim Message</a>
+                            <a class="btn sms" data-toggle="modal" data-modal="#smsModal" data-message={{ message.id }}>Add name/photo</a>
                         {% else %}
                         <a class="btn tweet" data-toggle="modal" data-modal="#tweetModal" data-message={{ message.id }}>Add name/photo</a>
                         {% endif %}
@@ -107,12 +136,12 @@ $('.tweet').click(function() {
 })
 
 $('.sms').click(function() {
-    var message = $(".message_id");
+    var message = $("#message_id");
     message.val($(this).attr('data-message'));
     $('#smsModal').modal();
     return false;
 })
-    
+
 $('#claimall').change(function () {
     if ($(this).is(':checked')) {
         twitterurl.claimall = true;
