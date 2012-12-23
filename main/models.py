@@ -21,7 +21,6 @@ class MessageSender(models.Model):
     phone_number = models.CharField(max_length=20, null=True)
     twitter_username = models.CharField(max_length=20, null=True)
     name = models.CharField(max_length=30)
-    image_url = models.URLField()
     image = models.ImageField(upload_to="photos", null=True)
     fb_uid = models.IntegerField(null=True)
 
