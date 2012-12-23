@@ -79,8 +79,8 @@
             <td>
                 <div class="media">
                     {% if message.sender %}
-                    <a class="pull-left" href={{ message.sender.image_url }}>
-                        <img class="media-object" src={{ message.sender.image_url }}>
+                    <a class="pull-left" href={{ message.sender.image.url }}>
+                        <img class="media-object" src={{ message.sender.image.url }}>
                     </a>
                     <div class="media-body">
                         <p>{{ message.sender }}</p>

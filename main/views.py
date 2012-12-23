@@ -238,10 +238,9 @@ def verify_sms(request):
             sender = MessageSender()
             sender.phone_number = message.phone_number
             sender.name = imageform.cleaned_data['name']
-            photoname = photo.name
+            photoname = photo.name.split('.')[0]
             resizedphoto = _handle_uploaded_photo(photo)
-            sender.image.save(photoname, resizedphoto)
-            sender.image_url = sender.image.url
+            sender.image.save(photoname + '.png', resizedphoto)
             sender.save()
 
             message.sender = sender
