@@ -72,34 +72,38 @@
 
     <p class="lead">{{ messages.0.wall.hashtag|cut:"#"|capfirst }} Messages</p>
 
-    <table class="table span12">
+    <table class="table table-condensed">
 
     {% for message in messages %}
         <tr>
-            {% if message.sender %}
-                <td>
-                    <div class="media">
-                        <a class="pull-left" href={{ message.sender.image_url }}>
-                            <img class="media-object" src={{ message.sender.image_url }}>
-                        </a>
-                        <div class-"media-body">
-                            <p>{{ message.sender }}</p>
-                        </div>
+            <td>
+                <div class="media">
+                    {% if message.sender %}
+                    <a class="pull-left" href={{ message.sender.image_url }}>
+                        <img class="media-object" src={{ message.sender.image_url }}>
+                    </a>
+                    <div class="media-body">
+                        <p>{{ message.sender }}</p>
                     </div>
-                </td>
-            {% else %}
-                <td>
+                    {% else %}
                     {% if user.is_superuser %}
-                        {% if  message.phone_number %}
+                        <a class="pull-left" href={% static "messages/img/unknown.png" %}>
+                            <img class="media-object" src={% static "messages/img/unknown.png" %}>
+                        </a>
+                        <div class="media-body">
+                        {% if message.phone_number %}
                             <a class="btn sms" data-toggle="modal" data-modal="#smsModal" data-message={{ message.id }}>Add name/photo</a>
                         {% else %}
-                        <a class="btn tweet" data-toggle="modal" data-modal="#tweetModal" data-message={{ message.id }}>Add name/photo</a>
+                            <a class="btn tweet" data-toggle="modal" data-modal="#tweetModal" data-message={{ message.id }}>Add name/photo</a>
                         {% endif %}
-            {% endif %}
-                </td>
-            {% endif %}
+                    </div>
+                    {% endif %}
+                    {% endif %}
+
+                </div>
+            </td>
             <td>{{ message.message }}</td>
-        </tr
+        </tr>
     {% endfor %}
     </table>
 {% endblock %}
