@@ -185,6 +185,7 @@ LOGGING = {
     }
 }
 
+
 env = environ.get("RACK_ENV", "dev")
 
 if env == "production":
@@ -193,8 +194,8 @@ if env == "production":
     import dj_database_url
     DATABASES['default'] = dj_database_url.config()
 
-    STATICFILES_STORAGE = 'texting_wall.main.s3utils.StaticS3BotoStorage'
-    DEFAULT_FILE_STORAGE = "texting_wall.main.s3utils.MediaS3BotoStorage"
+    STATICFILES_STORAGE = 'main.s3utils.StaticS3BotoStorage'
+    DEFAULT_FILE_STORAGE = "main.s3utils.MediaS3BotoStorage"
 
     AWS_STORAGE_BUCKET_NAME = environ.get("AWS_STORAGE_BUCKET_NAME", "")
     AWS_ACCESS_KEY_ID = environ.get("AWS_ACCESS_KEY_ID", "")
