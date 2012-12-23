@@ -8,3 +8,4 @@ venv
 *cov/
 setup_env.sh
 .ropeproject
+media/
