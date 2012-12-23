@@ -207,7 +207,7 @@ if env == "production":
     STATIC_DIRECTORY = '/static'
     MEDIA_DIRECTORY = '/media'
     STATIC_URL = S3_URL + STATIC_DIRECTORY
-    MEDIA_URL = S3_url + MEDIA_DIRECTORY
+    MEDIA_URL = S3_URL + MEDIA_DIRECTORY
 
     INSTALLATION = "production"
     GOOGLE_ANALYTICS = True
