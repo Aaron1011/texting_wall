@@ -193,7 +193,7 @@ if env == "production":
     import dj_database_url
     DATABASES['default'] = dj_database_url.config()
 
-    STATICFILES_STORAGE = 'texing_wal.main.s3utils.StaticS3BotoStorage'
+    STATICFILES_STORAGE = 'texing_wall.main.s3utils.StaticS3BotoStorage'
     DEFAULT_FILE_STORAGE = "texting_wall.main.s3utils.MediaS3BotoStorage"
 
     AWS_STORAGE_BUCKET_NAME = environ.get("AWS_STORAGE_BUCKET_NAME", "")
