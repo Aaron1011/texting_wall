@@ -35,6 +35,7 @@ ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
 
+USER_THUMB_DIM = 48
 
 MANAGERS = ADMINS
 
@@ -74,7 +75,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = '/media/'
+MEDIA_ROOT = os.path.abspath('media')
 
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
@@ -192,8 +193,8 @@ if env == "production":
     import dj_database_url
     DATABASES['default'] = dj_database_url.config()
 
-    STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-    DEFAULT_FILE_STORAGE = "storages.backends.s3boto.S3BotoStorage"
+    STATICFILES_STORAGE = 'texing_wal.main.s3utils.StaticS3BotoStorage'
+    DEFAULT_FILE_STORAGE = "texting_wall.main.s3utils.MediaS3BotoStorage"
 
     AWS_STORAGE_BUCKET_NAME = environ.get("AWS_STORAGE_BUCKET_NAME", "")
     AWS_ACCESS_KEY_ID = environ.get("AWS_ACCESS_KEY_ID", "")
@@ -201,6 +202,12 @@ if env == "production":
 
     TWILIO_ACCOUNT_SID = environ.get("TWILIO_ACCOUNT_SID", "")
     TWILIO_AUTH_TOKEN = environ.get("TWILIO_AUTH_TOKEN", "")
-    STATIC_URL = 'http://s3.amazonaws.com/textingwall/'
+
+    S3_URL = 'http://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+    STATIC_DIRECTORY = '/static'
+    MEDIA_DIRECTORY = '/media'
+    STATIC_URL = S3_URL + STATIC_DIRECTORY
+    MEDIA_URL = S3_url + MEDIA_DIRECTORY
+
     INSTALLATION = "production"
     GOOGLE_ANALYTICS = True

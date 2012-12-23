@@ -16,6 +16,9 @@ from Pubnub import Pubnub
 from main.models import Message, MessageSender, Wall
 import tweepy
 import json
+from PIL import Image
+import StringIO
+from django.core.files.base import ContentFile
 
 
 def index(request):
@@ -209,28 +212,44 @@ def new_wall(request):
         {"form": form, "phone_number": phone_number}, RequestContext(request))
 
 
+def _handle_uploaded_photo(photo):
+    D = settings.USER_THUMB_DIM
+    photo2 = Image.open(photo)
+    photo2.thumbnail((D, D), Image.ANTIALIAS)
+    back = Image.new("RGB", (D, D))
+    if float(photo2.size[0]) / photo2.size[1] > 1:
+        corner = (0, (back.size[1] - photo2.size[1]) / 2)
+    else:
+        corner = ((back.size[0] - photo2.size[0]) / 2, 0)
+    back.paste(photo2, corner)
+    thumb_io = StringIO.StringIO()
+    back.save(thumb_io, format="PNG")
+
+    return ContentFile(thumb_io.getvalue())
+
+
 def verify_sms(request):
     message = Message.objects.get(pk=request.POST['id'])
     imageform = local_forms.UploadImageForm(request.POST, request.FILES)
     if imageform.is_valid():
         if message.phone_number == "+1" + request.POST['areacode'] + request.POST['first'] + request.POST['second']:
-            photo = imageform.cleaned_data['photo']
+            photo = request.FILES.get('photo')
 
             sender = MessageSender()
             sender.phone_number = message.phone_number
             sender.name = imageform.cleaned_data['name']
-            sender.image.save(photo.name, photo)
+            photoname = photo.name
+            resizedphoto = _handle_uploaded_photo(photo)
+            sender.image.save(photoname, resizedphoto)
             sender.image_url = sender.image.url
             sender.save()
 
             message.sender = sender
             message.save()
 
-            if imageform.claimall:
+            if imageform.cleaned_data['claimall']:
                 for othermessage in Message.objects.get(phone_number=message.phone_number):
                     othermessage.sender = sender
                     othermessage.save()
-    else:
-        print imageform.errors
-
+    print imageform.errors
     return HttpResponseRedirect('/messages/' + str(Wall.objects.get(message=request.POST['id'])).strip("#"))
