@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
-from models import TRAFFIC_SOURCE, Wall, MessageSender
+from models import TRAFFIC_SOURCE, Wall
 import re
 
 
@@ -42,7 +42,3 @@ class UploadImageForm(forms.Form):
     name = forms.CharField()
     photo = forms.ImageField()
     claimall = forms.BooleanField(required=False, label="Clame all other messages sent using this phone number")
-
-    def clean_name(self):
-        if not re.match('[a-z A-Z]+', self.cleaned_data['name']):
-            raise forms.ValidationError("Invalid name")
