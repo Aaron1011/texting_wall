@@ -31,6 +31,9 @@ TWILIO_AUTH_TOKEN = environ.get("TWILIO_AUTH_TOKEN", "")
 OAUTH_CALLBACK = environ.get("OAUTH_CALLBACK", "")
 
 GOOGLE_ANALYTICS = False
+
+WALL_EXPIRATION = 10
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )

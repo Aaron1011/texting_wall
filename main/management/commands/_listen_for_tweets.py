@@ -7,13 +7,15 @@ setup_environ(settings)
 from tweepy.api import API
 from main.models import Wall, Message
 from main import Pubnub
-import json, re
+import json
+import re
 import time
-import sys, signal
+import datetime
+from django.utils.timezone import utc
 
 
 class PubnubListener(StreamListener):
-    """ A listener handles tweets are the received from the stream. 
+    """ A listener handles tweets are the received from the stream.
     This is a basic listener that just prints received tweets to stdout.
 
     """
@@ -24,7 +26,7 @@ class PubnubListener(StreamListener):
     def on_data(self, data):
         message = json.loads(data)
         print message
-        if message.has_key('text'):
+        if 'text' in message:
             tweet = re.search("(#\S+)", str(message['text']))
             print tweet.group(1)
             wall = Wall.objects.filter(hashtag__iexact=tweet.group(1))
@@ -37,15 +39,15 @@ class PubnubListener(StreamListener):
                 message2.save()
 
                 self.pubnub.publish({
-                    'channel' : wall[0].hashtag,
-                    'message' : {
-                        'message' : str(message['text'])
+                    'channel': wall[0].hashtag,
+                    'message': {
+                        'message': str(message['text'])
                     }
                 })
         else:
             print message
 
-        return True            
+        return True
 
     def on_error(self, status):
         print status
@@ -60,7 +62,7 @@ def main():
     stream = None
     while True:
         try:
-            current_hashtags = set(w.hashtag for w in Wall.objects.all())
+            current_hashtags = set(w.hashtag for w in Wall.objects.filter(last_ping__gt=datetime.datetime.utcnow().replace(tzinfo=utc) - datetime.timedelta(minutes=settings.WALL_EXPIRATION)))
             if len(current_hashtags - hashtags) > 0:
                 if stream is not None:
                     stream.disconnect()

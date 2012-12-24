@@ -28,6 +28,18 @@ origin="pubsub.pubnub.com" id="pubnub"></div>
         }
     });
 })();
+
+$(window).on('beforeunload', function(e) {
+    return 'Warning! If you leave this page, this wall will be closed. It will not be able to reveive any more messages';
+})
+
+$(window).on('unload', function(e) {
+    Dajaxice.main.close_wall(null, {'id': {{ wall.id }}});
+})
+
+setInterval(function() {
+    Dajaxice.main.ping_wall(null, {'id': {{ wall.id }}})
+    }, 3000);
 </script>
 
 {% endblock %}

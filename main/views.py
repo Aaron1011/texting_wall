@@ -16,6 +16,7 @@ from Pubnub import Pubnub
 from main.models import Message, MessageSender, Wall
 import tweepy
 import json
+import datetime
 from PIL import Image
 import StringIO
 from django.core.files.base import ContentFile
@@ -88,7 +89,6 @@ def sms_message(request):
     incoming_phone_number = request.POST['To']
 
     hashtag, body = _split_message(twilio_message, incoming_phone_number)
-    print hashtag, body
     if hashtag is not None and body is not None:
         message = models.Message()
         message.message = body
@@ -132,7 +132,9 @@ def _split_message(message, phone_number):
         wall = models.Wall.objects.get(phone_number=phone_number)
     except models.Wall.DoesNotExist:
         return None, None
-    return wall.hashtag, message
+    if datetime.datetime.now() - datetime.timedelta(minutes=settings.WALL_EXPIRATION) < wall.last_ping:
+        return wall.hashtag, message
+    return None, None
 
 
 def _purchase_phone_number(request):

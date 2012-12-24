@@ -12,6 +12,7 @@ class Wall(models.Model):
     hashtag = models.CharField(max_length=20, help_text='Twitter hashtag to tweet to', default=_generate_default_hashtag())
     user = models.ForeignKey(User, editable=False)
     phone_number = models.CharField(max_length=20)
+    last_ping = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
         return self.hashtag
