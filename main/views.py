@@ -1,10 +1,11 @@
 # Create your views here.
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.template import RequestContext
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse_lazy
 from forms import WallForm
 import forms as local_forms
 import models
@@ -28,11 +29,9 @@ def index(request):
     return render_to_response("index.html", RequestContext(request))
 
 
-@login_required(login_url='/login', redirect_field_name='/create_wall')
+@login_required(reverse_lazy('login'))
 def display_wall(request, id):
-    wall = models.Wall.objects.filter(pk=id)[0]
-    if not wall:
-        return render_to_response("404.html")
+    wall = get_object_or_404(models.Wall, pk=id)
     return render_to_response("wall.html", {'wall': wall})
 
 
@@ -80,9 +79,6 @@ def twitter_oauth(request, id=None):
 
 @twilio_view
 def sms_message(request):
-    PUBLISH_KEY = "pub-8a8223f4-631c-4484-a118-2b01232307cc"
-    SUBSCRIBE_KEY = "sub-e754ed6b-133d-11e2-91f2-b58e6c804094"
-    SECRET = "sec-ZjcxZGVjNDAtZWQyMC00MGZmLTg1Y2MtNmJkNGE3YTJiYjlj"
 
     twilio_message = request.POST['Body']
     phone_number = request.POST['From']
@@ -96,14 +92,13 @@ def sms_message(request):
         message.wall = models.Wall.objects.get(hashtag=hashtag)
         message.save()
 
-        pubnub = Pubnub(PUBLISH_KEY, SUBSCRIBE_KEY, SECRET, False)
-        info = pubnub.publish({
+        pubnub = Pubnub(settings.PUBLISH_KEY, settings.SUBSCRIBE_KEY, settings.SECRET, False)
+        pubnub.publish({
             'channel': hashtag,
             'message': {
                 'message': body
             }
         })
-        print info
         return HttpResponse("Success!")
     return HttpResponse("Error")
 
@@ -143,7 +138,7 @@ def _purchase_phone_number(request):
         if numbers:
             numbers[0].purchase()
             break
-    numbers[0].update(sms_method='POST', sms_url='/recieve_sms')
+    numbers[0].update(sms_method='POST', sms_url=reverse_lazy('recieve_sms'))
     return numbers[0]
 
 
@@ -188,7 +183,7 @@ def logout_view(request):
     return HttpResponseRedirect('/')
 
 
-@login_required(login_url="/login", redirect_field_name='/create_wall/')
+@login_required(login_url=reverse_lazy("login"), redirect_field_name=reverse('create_wall'))
 def new_wall(request):
     if request.POST:
         f = WallForm(data=request.POST)
@@ -197,7 +192,7 @@ def new_wall(request):
             wallform.user = request.user
             wallform.phone_number = f.data['phone_number']
             wallform.save()
-            return HttpResponseRedirect('/wall/' + str(wallform.id))
+            return HttpResponseRedirect(reverse('wall', args=[str(wallform.id)]))
         else:
             print f.errors
             return render_to_response(
@@ -253,4 +248,4 @@ def verify_sms(request):
                     othermessage.sender = sender
                     othermessage.save()
     print imageform.errors
-    return HttpResponseRedirect('/messages/' + str(Wall.objects.get(message=request.POST['id'])).strip("#"))
+    return HttpResponseRedirect(reverse('messages', args=[str(Wall.objects.get(message=request.POST['id'])).strip("#")]))

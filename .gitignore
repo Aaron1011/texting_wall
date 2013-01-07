@@ -9,3 +9,4 @@ venv
 setup_env.sh
 .ropeproject
 media/
+local_settings.py

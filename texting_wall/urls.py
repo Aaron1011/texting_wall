@@ -4,7 +4,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from django.conf.urls.static import static
 
-# Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
@@ -16,10 +15,10 @@ urlpatterns = patterns('',
     url(r'^$', 'main.views.index'),
     url(r'^create_account/', 'main.views.create_account'),
     url(r'^finish/', 'main.views.finish'),
-    url(r'^login/', 'django.contrib.auth.views.login', kwargs={"template_name": 'login.html'}),
+    url(r'^login/', 'django.contrib.auth.views.login', kwargs={"template_name": 'login.html'}, name="login"),
     url(r'^logout/', 'main.views.logout_view'),
     url(r'^create_wall/', 'main.views.new_wall'),
-    url(r'^recieve_sms/', 'main.views.sms_message'),
+    url(r'^recieve_sms/', 'main.views.sms_message', name="recieve_sms"),
     url(r'^wall/(?P<id>\d+)/', 'main.views.display_wall'),
     url(r'^messages/(?P<name>\w+)/', 'main.views.display_messages'),
     url(r'^authorize/(?P<id>\d+)/', 'main.views.twitter_oauth'),

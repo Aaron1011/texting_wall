@@ -25,7 +25,7 @@ class SMSTest(TestCase):
         a.save()
 
         self.assertEquals(_split_message('This is a sentence', ''), (a.hashtag, 'This is a sentence'))
-       
+
 
     def test_phone_number(self):
 
@@ -50,5 +50,4 @@ class SMSTest(TestCase):
         self.assertEquals(_split_message('Hello world', b.phone_number), (b.hashtag, 'Hello world'))
         self.assertEquals(_split_message('Hello world', '+12223334444'), (None, None))
 
-    def test_purchase_phone_number(self):
-        
+    #def test_purchase_phone_number(self):

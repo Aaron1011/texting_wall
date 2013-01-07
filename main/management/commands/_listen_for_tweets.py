@@ -6,7 +6,7 @@ from texting_wall import settings
 setup_environ(settings)
 from tweepy.api import API
 from main.models import Wall, Message
-from main import Pubnub
+import Pubnub
 import json
 import re
 import time
