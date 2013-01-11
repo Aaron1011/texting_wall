@@ -2,7 +2,7 @@ from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
 from django.core.management import setup_environ
-from texting_wall import settings
+from django.conf import settings
 setup_environ(settings)
 from tweepy.api import API
 from main.models import Wall, Message
@@ -54,7 +54,7 @@ class PubnubListener(StreamListener):
 
 
 def main():
-    pubnub = Pubnub.Pubnub(settings.PUBLISH_KEY, settings.SUBSCRIBE_KEY, settings.SECRET, False)
+    pubnub = Pubnub.Pubnub(settings.PUBNUB_PUBLISH_KEY, settings.PUBNUB_SUBSCRIBE_KEY, settings.PUBNUB_SECRET, False)
     hashtags = set()
 
     auth = OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
