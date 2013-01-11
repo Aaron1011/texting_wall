@@ -1,9 +1,7 @@
 from tweepy.streaming import StreamListener
 from tweepy import OAuthHandler
 from tweepy import Stream
-from django.core.management import setup_environ
 from django.conf import settings
-setup_environ(settings)
 from tweepy.api import API
 from main.models import Wall, Message
 import Pubnub
