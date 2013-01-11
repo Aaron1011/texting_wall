@@ -91,7 +91,7 @@ def sms_message(request):
         message.wall = models.Wall.objects.get(hashtag=hashtag)
         message.save()
 
-        pubnub = Pubnub(settings.PUBLISH_KEY, settings.SUBSCRIBE_KEY, settings.SECRET, False)
+        pubnub = Pubnub(settings.PUBNUB_PUBLISH_KEY, settings.PUBNUB_SUBSCRIBE_KEY, settings.PUBNUB_SECRET, False)
         pubnub.publish({
             'channel': hashtag,
             'message': {
