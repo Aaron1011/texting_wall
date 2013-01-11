@@ -34,8 +34,10 @@ GOOGLE_ANALYTICS = False
 WALL_EXPIRATION = 10
 
 ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
+    ('Aaron Hill', 'aa1ronham@gmail.com'),
 )
+
+SERVER_EMAIL = 'django@textingwall.org'
 
 USER_THUMB_DIM = 48
 
