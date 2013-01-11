@@ -5,7 +5,6 @@ from django.template import RequestContext
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
 from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse_lazy
 from forms import WallForm
 import forms as local_forms
 import models
@@ -29,7 +28,7 @@ def index(request):
     return render_to_response("index.html", RequestContext(request))
 
 
-@login_required(reverse_lazy('login'))
+@login_required(login_url="/login/")
 def display_wall(request, id):
     wall = get_object_or_404(models.Wall, pk=id)
     return render_to_response("wall.html", {'wall': wall})
@@ -138,7 +137,7 @@ def _purchase_phone_number(request):
         if numbers:
             numbers[0].purchase()
             break
-    numbers[0].update(sms_method='POST', sms_url=reverse_lazy('recieve_sms'))
+    numbers[0].update(sms_method='POST', sms_url='/recieve_sms')
     return numbers[0]
 
 
@@ -183,7 +182,7 @@ def logout_view(request):
     return HttpResponseRedirect('/')
 
 
-@login_required(login_url=reverse_lazy("login"), redirect_field_name=reverse('create_wall'))
+@login_required(login_url='/login/', redirect_field_name='/create_wall/')
 def new_wall(request):
     if request.POST:
         f = WallForm(data=request.POST)
@@ -192,7 +191,7 @@ def new_wall(request):
             wallform.user = request.user
             wallform.phone_number = f.data['phone_number']
             wallform.save()
-            return HttpResponseRedirect(reverse('wall', args=[str(wallform.id)]))
+            return HttpResponseRedirect('/wall' + str(wallform.id))
         else:
             print f.errors
             return render_to_response(
@@ -248,4 +247,4 @@ def verify_sms(request):
                     othermessage.sender = sender
                     othermessage.save()
     print imageform.errors
-    return HttpResponseRedirect(reverse('messages', args=[str(Wall.objects.get(message=request.POST['id'])).strip("#")]))
+    return HttpResponseRedirect('/messages' + str(Wall.objects.get(message=request.POST['id'])).strip("#"))
