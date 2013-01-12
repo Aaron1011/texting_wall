@@ -37,7 +37,6 @@ ADMINS = (
     ('Aaron Hill', 'aa1ronham@gmail.com'),
 )
 
-SERVER_EMAIL = 'django@textingwall.org'
 
 USER_THUMB_DIM = 48
 
@@ -144,7 +143,7 @@ LOGGING = {
 env = environ.get("RACK_ENV", "dev")
 
 if env == "production":
-    DEBUG = False
+    DEBUG = True
     INSTALLED_APPS += ('gunicorn', "storages", "django_twilio",)
     import dj_database_url
     DATABASES['default'] = dj_database_url.config()
@@ -159,6 +158,7 @@ if env == "production":
     TWILIO_ACCOUNT_SID = "ACafdbf02572edd7c9dbdaf382a223274c"
     TWILIO_AUTH_TOKEN = environ.get("TWILIO_AUTH_TOKEN", "")
 
+
     S3_URL = 'http://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
     STATIC_DIRECTORY = '/static'
     MEDIA_DIRECTORY = '/media'
@@ -167,6 +167,8 @@ if env == "production":
 
     INSTALLATION = "production"
     GOOGLE_ANALYTICS = True
+
+
 
 try:
     from local_settings import *
