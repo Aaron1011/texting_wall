@@ -143,7 +143,7 @@ LOGGING = {
 env = environ.get("RACK_ENV", "dev")
 
 if env == "production":
-    DEBUG = True
+    DEBUG = False
     INSTALLED_APPS += ('gunicorn', "storages", "django_twilio",)
     import dj_database_url
     DATABASES['default'] = dj_database_url.config()
