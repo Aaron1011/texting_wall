@@ -143,7 +143,7 @@ LOGGING = {
 env = environ.get("RACK_ENV", "dev")
 
 if env == "production":
-    DEBUG = True
+    DEBUG = False
     INSTALLED_APPS += ('gunicorn', "storages", "django_twilio",)
     import dj_database_url
     DATABASES['default'] = dj_database_url.config()
@@ -159,7 +159,7 @@ if env == "production":
     TWILIO_AUTH_TOKEN = environ.get("TWILIO_AUTH_TOKEN", "")
 
 
-    S3_URL = 'http://%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+    S3_URL = 'http://s3.amazonaws.com/%s' % AWS_STORAGE_BUCKET_NAME
     STATIC_DIRECTORY = '/static'
     MEDIA_DIRECTORY = '/media'
     STATIC_URL = S3_URL + STATIC_DIRECTORY
