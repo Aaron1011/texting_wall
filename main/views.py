@@ -31,7 +31,7 @@ def index(request):
 @login_required(login_url="/login/")
 def display_wall(request, id):
     wall = get_object_or_404(models.Wall, pk=id)
-    return render_to_response("wall.html", {'wall': wall})
+    return render_to_response("wall.html", {'wall': wall, 'messages': wall.message_set.all()})
 
 
 def twitter_oauth(request, id=None):
@@ -106,15 +106,8 @@ def _get_phone_number():
     if settings.DEBUG:
         return "6176005993"
     return "6176005993"  # Will be removed when deployed to other companies
-    numbers = []
-    for num in twilio_client.phone_numbers.iter():
-        numbers.append(num)
-    for wall in models.Wall.objects.all():
-        try:
-            numbers.remove(wall.phone_number)
-        except ValueError:
-            pass
-    return numbers[0]
+
+    return [num for num in twilio_client.phone_numbers.list() if not Wall.objects.filter(phone_number__exact=num)]
 
 
 def _split_message(message, phone_number):
