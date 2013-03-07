@@ -16,16 +16,21 @@ sub-key="sub-e754ed6b-133d-11e2-91f2-b58e6c804094" ssl="off"
 origin="pubsub.pubnub.com" id="pubnub"></div>
 <script src="http://cdn.pubnub.com/pubnub-3.1.min.js"></script>
 <script>
-(function() {
-    PUBNUB.subscribe( {
-        channel    : "{{ wall.hashtag }}",
-        callback   : function(message) {
+
+var MESSAGES = {{ messages }}
+
+function new_message(message) {
             $('.messages').append("<p>" + message['message'] + "</p>");
             $('html, body').animate({
                 scrollTop: $(document).height()
             },
             450);
-        }
+}
+
+(function() {
+    PUBNUB.subscribe( {
+        channel    : "{{ wall.hashtag }}",
+        callback   : new_message
     });
 })();
 
@@ -39,7 +44,9 @@ $(window).on('unload', function(e) {
 
 setInterval(function() {
     Dajaxice.main.ping_wall(null, {'id': {{ wall.id }}})
-    }, 3000);
+}, 3000);
+
+$.each(MESSAGES, function(index, message) { new_message(message) });
 </script>
 
 {% endblock %}
