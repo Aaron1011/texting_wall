@@ -1,0 +1,2 @@
+language: python
+  - DJANGO_VERSION=1.4.1
