@@ -9,7 +9,7 @@ before_script:
   - "export RACK_ENV=production" 
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3
-  - "gunicorn texting_wall.wsgi -b 0.0.0.0:8000"
+  - "python manage.py runserver &"
   - sleep 5
 
 script:
