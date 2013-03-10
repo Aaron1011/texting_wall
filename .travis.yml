@@ -3,3 +3,14 @@ python:
   - "2.7"
 env:
   - DJANGO_VERSION=1.4.1
+
+before_script:
+  - "export DISPLAY=:99.0"
+  - "export RACK_ENV=production" 
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3
+  - "gunicorn texting_wall.wsgi -b 0.0.0.0:8000"
+  - sleep 5
+
+script:
+  - "python manage.py test main"
