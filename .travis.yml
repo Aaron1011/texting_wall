@@ -6,7 +6,9 @@ env:
 
 before_script:
   - "export DISPLAY=:99.0"
-  - "export RACK_ENV=test" 
+  - "export RACK_ENV=test"
+  - secure: "bVDs+Yw5UQ8cZwvRvT4fnp1uhVYxdE+ObvQf0eaEEU5q65XzWlhGUjyB45lQ\nvJkE/JfDDAzl1JqSmQeN2ppoX332jMW+ajT63Jwbvs0ilIWVqekGgW7Wl6GF\nW6KlSRnxT6DDSPdfSMtknXcW4vsJyNOWly3ck4ylCEr0+FM3fh8="
+  - secure: "TIrHYLDCxu2vMQZxjG6UN4YLeDFPx6I//DvBXA7kwf9gRC0+BurlpCImSNCC\nkI3K6ojJKgoqpV54SSCoNRJZI7IaWQhNvU/8ihzu2KwmUMBPHR9SsV3XTmaY\ndOM7+Luz2BsDTsfAk/6JzMF9nhwCWd96NOrNw0WB3WABBzNVSt4="
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3
   - "python manage.py runserver &"
