@@ -142,22 +142,39 @@ LOGGING = {
 
 env = environ.get("RACK_ENV", "dev")
 
+
 if env == "production":
     DEBUG = False
     INSTALLED_APPS += ('gunicorn', "storages", "django_twilio",)
     import dj_database_url
     DATABASES['default'] = dj_database_url.config()
 
+    AWS_STORAGE_BUCKET_NAME = "textingwall"
+
+    INSTALLATION = "production"
+    GOOGLE_ANALYTICS = True
+
+elif env == "test":
+    INSTALLED_APPS += ('storages',)
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'db.sqlite',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': '',
+    }
+
+
+elif env != "dev":
     STATICFILES_STORAGE = 'main.s3utils.StaticS3BotoStorage'
     DEFAULT_FILE_STORAGE = "main.s3utils.MediaS3BotoStorage"
-
-    AWS_STORAGE_BUCKET_NAME = "textingwall"
-    AWS_ACCESS_KEY_ID = "AKIAJDPMOLSYHWGM4NYQ"
-    AWS_SECRET_ACCESS_KEY = environ.get("AWS_SECRET_ACCESS_KEY", "")
 
     TWILIO_ACCOUNT_SID = "ACafdbf02572edd7c9dbdaf382a223274c"
     TWILIO_AUTH_TOKEN = environ.get("TWILIO_AUTH_TOKEN", "")
 
+    AWS_ACCESS_KEY_ID = "AKIAJDPMOLSYHWGM4NYQ"
+    AWS_SECRET_ACCESS_KEY = environ.get("AWS_SECRET_ACCESS_KEY", "")
 
     S3_URL = 'http://s3.amazonaws.com/%s' % AWS_STORAGE_BUCKET_NAME
     STATIC_DIRECTORY = '/static'
@@ -165,12 +182,8 @@ if env == "production":
     STATIC_URL = S3_URL + STATIC_DIRECTORY
     MEDIA_URL = S3_URL + MEDIA_DIRECTORY
 
-    INSTALLATION = "production"
-    GOOGLE_ANALYTICS = True
-
-
 
 try:
     from local_settings import *
-except Exception:
-    pass
+except Exception, e:
+    print e
