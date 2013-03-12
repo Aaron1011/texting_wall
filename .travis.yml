@@ -7,8 +7,8 @@ env:
 before_script:
   - "export DISPLAY=:99.0"
   - "export RACK_ENV=test"
-  - secure: "bVDs+Yw5UQ8cZwvRvT4fnp1uhVYxdE+ObvQf0eaEEU5q65XzWlhGUjyB45lQ\nvJkE/JfDDAzl1JqSmQeN2ppoX332jMW+ajT63Jwbvs0ilIWVqekGgW7Wl6GF\nW6KlSRnxT6DDSPdfSMtknXcW4vsJyNOWly3ck4ylCEr0+FM3fh8="
-  - secure: "TIrHYLDCxu2vMQZxjG6UN4YLeDFPx6I//DvBXA7kwf9gRC0+BurlpCImSNCC\nkI3K6ojJKgoqpV54SSCoNRJZI7IaWQhNvU/8ihzu2KwmUMBPHR9SsV3XTmaY\ndOM7+Luz2BsDTsfAk/6JzMF9nhwCWd96NOrNw0WB3WABBzNVSt4="
+  - secure: "PP1usGHuMo78K42gLsVwELSSwwuVqSO6+k8Rll59Q7e1ksoxcr3MLryaDUIt\nL96M4XxiVgowhrmdUorQuXvcM2xBDeh6qxU/XADdNC4PTLRgGqzwI5okbs/o\nYhKczULe+OfhSG/90vzPa1MYC21XbRk9VqmXtHXTGG1xbguwbP8="
+  - secure: "ptexJP10s7rSiuRMR0k+AofoIxxVSp7cq0hbbCGyc4VJh048CWrW8/yDmb1A\nhOG1ww1J/20h8KzL1YO2GfP1mraqRPcmznpvyc5Xg7KI4jV2J+xyeiwRx0Hx\n2gdQvFyUzRLTi2RF/pTVCphOXdzAbg0YUvSCzCXHseoPur95n9k="
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3
   - "python manage.py runserver &"
