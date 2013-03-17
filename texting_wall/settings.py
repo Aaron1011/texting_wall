@@ -167,7 +167,7 @@ elif env == "test":
     }
 
 
-elif env != "dev":
+if env != "dev":
     STATICFILES_STORAGE = 'main.s3utils.StaticS3BotoStorage'
     DEFAULT_FILE_STORAGE = "main.s3utils.MediaS3BotoStorage"
 
