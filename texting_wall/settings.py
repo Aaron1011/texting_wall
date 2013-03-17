@@ -112,6 +112,8 @@ INSTALLED_APPS = (
     'main',
     'south',
     'django.contrib.admin',
+    'django_twilio'
+
 )
 
 LOGGING = {
@@ -144,7 +146,7 @@ env = environ.get("RACK_ENV", "dev")
 
 if env == "production":
     DEBUG = False
-    INSTALLED_APPS += ('gunicorn', "storages", "django_twilio",)
+    INSTALLED_APPS += ('gunicorn', "storages")
     import dj_database_url
     DATABASES['default'] = dj_database_url.config()
 
