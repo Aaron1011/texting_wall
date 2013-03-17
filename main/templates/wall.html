@@ -11,13 +11,20 @@
 {% endblock %}
 
 {% block javascript %}
-<div pub-key="pub-8a8223f4-631c-4484-a118-2b01232307cc"
-sub-key="sub-e754ed6b-133d-11e2-91f2-b58e6c804094" ssl="off"
-origin="pubsub.pubnub.com" id="pubnub"></div>
-<script src="http://cdn.pubnub.com/pubnub-3.1.min.js"></script>
+<div id=pubnub pub-key="{{ PUBNUB_PUBLISH_KEY}}"
+sub-key="{{ PUBNUB_SUBSCRIBE_KEY }}" ssl="off"
+origin="pubsub.pubnub.com"></div>
+
+<script src="http://cdn.pubnub.com/pubnub-3.4.2.min.js" ></script>
+
 <script>
 
-var MESSAGES = {{ messages }}
+    PUBNUB.subscribe({
+        channel : "{{ wall.hashtag }}",
+        message : new_message ,
+});
+
+	var MESSAGES = {{ messages|safe }};
 
 function new_message(message) {
             $('.messages').append("<p>" + message['message'] + "</p>");
@@ -27,26 +34,22 @@ function new_message(message) {
             450);
 }
 
-(function() {
-    PUBNUB.subscribe( {
-        channel    : "{{ wall.hashtag }}",
-        callback   : new_message
-    });
-})();
+
+
 
 $(window).on('beforeunload', function(e) {
     return 'Warning! If you leave this page, this wall will be closed. It will not be able to reveive any more messages';
 })
 
 $(window).on('unload', function(e) {
-    Dajaxice.main.close_wall(null, {'id': {{ wall.id }}});
+    $.get("{% url main.views.close_wall %}", {"id": {{ wall.id }}});
 })
 
 setInterval(function() {
-    Dajaxice.main.ping_wall(null, {'id': {{ wall.id }}})
+    $.get("{% url main.views.ping_wall %}",{"id": {{ wall.id }}});
 }, 3000);
 
-$.each(MESSAGES, function(index, message) { new_message(message) });
+$.each(MESSAGES, function(index, message) { new_message({'message': message}) });
 </script>
 
 {% endblock %}

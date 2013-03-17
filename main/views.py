@@ -20,6 +20,7 @@ import datetime
 from PIL import Image
 import StringIO
 from django.core.files.base import ContentFile
+from django.views.decorators.csrf import csrf_exempt
 
 
 def index(request):
@@ -31,7 +32,13 @@ def index(request):
 @login_required(login_url="/login/")
 def display_wall(request, id):
     wall = get_object_or_404(models.Wall, pk=id)
-    return render_to_response("wall.html", {'wall': wall, 'messages': wall.message_set.all()})
+    for i in wall.message_set.all():
+        print i.message
+    return render_to_response("wall.html", {'wall': wall, 'messages': [str(m.message) for m in wall.message_set.all()],
+                                            "PUBNUB_PUBLISH_KEY" : settings.PUBNUB_PUBLISH_KEY,
+                                            "PUBNUB_SUBSCRIBE_KEY" : settings.PUBNUB_SUBSCRIBE_KEY,
+                                            "PUBNUB_SECRET": settings.PUBNUB_SECRET
+                              })
 
 
 def twitter_oauth(request, id=None):
@@ -78,7 +85,6 @@ def twitter_oauth(request, id=None):
 
 @twilio_view
 def sms_message(request):
-
     twilio_message = request.POST['Body']
     phone_number = request.POST['From']
     incoming_phone_number = request.POST['To']
@@ -100,7 +106,6 @@ def sms_message(request):
         })
         return HttpResponse("Success!")
     return HttpResponse("Error")
-
 
 def _get_phone_number():
     if settings.DEBUG:
@@ -217,7 +222,7 @@ def _handle_uploaded_photo(photo):
     return ContentFile(thumb_io.getvalue())
 
 
-def verify_sms(request):
+def create_sms_sender(request):
     message = Message.objects.get(pk=request.POST['id'])
     imageform = local_forms.UploadImageForm(request.POST, request.FILES)
     if imageform.is_valid():
@@ -241,3 +246,51 @@ def verify_sms(request):
                     othermessage.save()
     print imageform.errors
     return HttpResponseRedirect('/messages' + str(Wall.objects.get(message=request.POST['id'])).strip("#"))
+
+def json_response(f):
+    def func(*args, **kwargs):
+        status_code = 200
+        response = f(*args, **kwargs)
+
+        body = json.dumps(response)
+        if 'callback' in args[0].GET:
+            body = '%s(%s)' % (args[0].GET['callback'], body)
+
+        return HttpResponse(body, status=status_code)
+    return func
+
+@json_response
+@csrf_exempt
+def verify_sms(request):
+    try:
+        message = Message.objects.get(pk=request.GET['message_id'])
+    except Message.DoesNotExist:
+        return {'status': False}
+
+    print message.phone_number
+    print request.GET['phone_number']
+    if message.phone_number == request.GET['phone_number']:
+        return {'status': True}
+
+    return {'status': False}
+
+
+@csrf_exempt
+def close_wall(request):
+    wall = Wall.objects.get(pk=request.GET['id'])
+    print "Closing wall"
+    wall.last_ping -= datetime.timedelta(minutes=settings.WALL_EXPIRATION)
+    print wall.last_ping
+    wall.save()
+
+
+@csrf_exempt
+@json_response
+def ping_wall(request):
+    wall = Wall.objects.get(pk=request.GET['id'])
+    wall.lastping = datetime.datetime.utcnow().replace(tzinfo=utc)
+    print wall.lastping
+    wall.save()
+
+
+

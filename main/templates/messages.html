@@ -37,7 +37,7 @@
         <h3>Step Two:</h3>
         <h5>Enter in your name and upload a photo that will appear next to your message</h5>
 
-        <form enctype="multipart/form-data" id="userdata" action="{% url main.views.verify_sms %}" method="POST">{% csrf_token %}
+        <form enctype="multipart/form-data" id="userdata" action="{% url main.views.create_sms_sender %}" method="POST">{% csrf_token %}
             <table>
                 {{ form.as_table }}
             </table>
@@ -131,7 +131,8 @@ function build_url () {
 }
 
 $('button:contains("Verify")').click(function() {
-    output = Dajaxice.main.verify_sms(verify_callback, {'message_id': $('#message_id').val(), 'areacode': $('input[name="areacode"]').val(), 'first': $('input[name="first"]').val(), 'second': $('input[name="second"]').val()})
+    $.getJSON("{% url main.views.verify_sms %}", {'message_id':
+        $('#message_id').val(), 'phone_number': '+1' + $('input[name="areacode"]').val() + $('input[name="first"]').val() + $('input[name="second"]').val()}, verify_callback)
 })
 
 $('.tweet').click(function() {

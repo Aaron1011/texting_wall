@@ -2,6 +2,5 @@ Django==1.4.1
 tweepy==1.11
 South==0.7.6
 django-twilio==0.4
-django-dajaxice==0.5.4
 pillow==1.7.8
 pubnub==3.3.1

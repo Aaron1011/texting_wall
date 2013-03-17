@@ -74,7 +74,6 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'dajaxice.finders.DajaxiceFinder',
 )
 
 SECRET_KEY = '+303s__l2ataaceln$qfb7sp5qn%j5d&amp;_hrl_ijf^1+#dtduga'
@@ -111,7 +110,6 @@ INSTALLED_APPS = (
     'django.contrib.sitemaps',
     'main',
     'south',
-    'dajaxice',
     'django.contrib.admin',
 )
 

@@ -7,8 +7,6 @@ from django.conf.urls.static import static
 from django.contrib import admin
 admin.autodiscover()
 
-from dajaxice.core import dajaxice_autodiscover, dajaxice_config
-dajaxice_autodiscover()
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
@@ -24,8 +22,10 @@ urlpatterns = patterns('',
     url(r'^authorize/(?P<id>\d+)/', 'main.views.twitter_oauth'),
     url(r'^authorize$', 'main.views.twitter_oauth'),
     url(r'^uucmthanks/', redirect_to, {'url': '/messages/uucmthanks/'}),
+    url(r'^create_sms_sender/', 'main.views.create_sms_sender'),
     url(r'^verify_sms/', 'main.views.verify_sms'),
-    url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),)
+    url(r'^close_wall/', 'main.views.close_wall'),
+    url(r'^ping_wall/', 'main.views.ping_wall'))
 
 urlpatterns += staticfiles_urlpatterns()
 if settings.DEBUG:
