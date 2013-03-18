@@ -14,6 +14,7 @@ from django.conf import settings
 from django_twilio.client import twilio_client
 from Pubnub import Pubnub
 from main.models import Message, MessageSender, Wall
+from django.utils.timezone import utc
 import tweepy
 import json
 import datetime
@@ -124,7 +125,7 @@ def _split_message(message, phone_number):
         wall = models.Wall.objects.get(phone_number=phone_number)
     except models.Wall.DoesNotExist:
         return None, None
-    if datetime.datetime.now() - datetime.timedelta(minutes=settings.WALL_EXPIRATION) < wall.last_ping:
+    if datetime.datetime.now(utc) - datetime.timedelta(minutes=settings.WALL_EXPIRATION) < wall.last_ping:
         return wall.hashtag, message
     return None, None
 
