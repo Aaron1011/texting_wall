@@ -150,21 +150,12 @@ if env == "production":
     import dj_database_url
     DATABASES['default'] = dj_database_url.config()
 
-    AWS_STORAGE_BUCKET_NAME = "textingwall"
-
     INSTALLATION = "production"
     GOOGLE_ANALYTICS = True
 
-elif env == "test":
+if env == "test":
+    DEBUG = False
     INSTALLED_APPS += ('storages',)
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-    }
 
 
 if env != "dev":
@@ -174,6 +165,8 @@ if env != "dev":
     TWILIO_ACCOUNT_SID = "ACafdbf02572edd7c9dbdaf382a223274c"
     TWILIO_AUTH_TOKEN = environ.get("TWILIO_AUTH_TOKEN", "")
 
+
+    AWS_STORAGE_BUCKET_NAME = "textingwall"
     AWS_ACCESS_KEY_ID = "AKIAJDPMOLSYHWGM4NYQ"
     AWS_SECRET_ACCESS_KEY = environ.get("AWS_SECRET_ACCESS_KEY", "")
 
