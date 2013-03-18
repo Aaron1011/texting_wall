@@ -2,13 +2,14 @@ language: python
 python:
   - "2.7"
 env:
-  - DJANGO_VERSION=1.4.1
+  global:
+    - DJANGO_VERSION=1.4.1
+    - secure: "mbnS2lycZn6/7jKjRf7c5yqQtQXYXBqhzy/FzCuDY9se8t3JxrRL6TUMFZcs\nDl2gJTx6pwjl4DqIUqKkS8tjBdy6zgtq1mDwUrxKwKreIHRo1YPl8hvDDJEz\nnMja/tzVoUA4EFdvyK46srklQHs18S2OKMmMQCa921TAFEOIv5A="
+    - secure: "iroiS72GhQgKzj7rm+1GoKHkLi4sYXdsdo6Ebe5v6C5lgSBFQ11yWiSQxATt\nxsfzfAF3MyG21lnM/bttUQTP4kJ8DIotLlqmz8+HUYMXZQCZWE9WAfDfDqqJ\nIdeHnet8NuRslJGObkejt/BG8/5Rggbnav9yRhOL3lzeamiVVqY="
 
 before_script:
   - "export DISPLAY=:99.0"
   - "export RACK_ENV=test"
-  - secure: "mbnS2lycZn6/7jKjRf7c5yqQtQXYXBqhzy/FzCuDY9se8t3JxrRL6TUMFZcs\nDl2gJTx6pwjl4DqIUqKkS8tjBdy6zgtq1mDwUrxKwKreIHRo1YPl8hvDDJEz\nnMja/tzVoUA4EFdvyK46srklQHs18S2OKMmMQCa921TAFEOIv5A="
-  - secure: "iroiS72GhQgKzj7rm+1GoKHkLi4sYXdsdo6Ebe5v6C5lgSBFQ11yWiSQxATt\nxsfzfAF3MyG21lnM/bttUQTP4kJ8DIotLlqmz8+HUYMXZQCZWE9WAfDfDqqJ\nIdeHnet8NuRslJGObkejt/BG8/5Rggbnav9yRhOL3lzeamiVVqY="
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3
   - "python manage.py runserver &"
