@@ -6,6 +6,12 @@ env:
     - DJANGO_VERSION=1.4.1
     - secure: "mbnS2lycZn6/7jKjRf7c5yqQtQXYXBqhzy/FzCuDY9se8t3JxrRL6TUMFZcs\nDl2gJTx6pwjl4DqIUqKkS8tjBdy6zgtq1mDwUrxKwKreIHRo1YPl8hvDDJEz\nnMja/tzVoUA4EFdvyK46srklQHs18S2OKMmMQCa921TAFEOIv5A="
     - secure: "iroiS72GhQgKzj7rm+1GoKHkLi4sYXdsdo6Ebe5v6C5lgSBFQ11yWiSQxATt\nxsfzfAF3MyG21lnM/bttUQTP4kJ8DIotLlqmz8+HUYMXZQCZWE9WAfDfDqqJ\nIdeHnet8NuRslJGObkejt/BG8/5Rggbnav9yRhOL3lzeamiVVqY="
+    - secure: "gz/Vt+0U/dujPleDaS6x9i66Z/dFuOcbLYVr5tvuEeh+JbFluKnl2XtfAQCT\nnLecSVgreuopSiccQQPh30SwyLGDJormb9Ba33vDI/f9E9EStwIgavSVplgn\nGaf3avxM0OW5sSMdq2BcSNzeQhgEcgjZrqjAO4CsEaChM+a9vCw="
+    - secure: "Hw+Ds9Ap3j8tgMln/bgZnj9OThghwfZ0sr/dTqgaS1auj00maJbFUAQjS/L1\nTOapRmGFD9rzbuDBvRojqK1uID2+ITGnzRsGYOchlBp6U9rajQY3ppHlWNzS\nODImarW34Ub+bpzLuKppA9blM8V2NtVwFX4rxDYBuRCgcUpdWbM="
+    - secure: "V1Gm/EACVfbUsUGM/W2SJu+BzXq/+jCPzk+m5dlQxGYF/Kzn5H+emuIAfNcm\nsXv4077KCG5tr4LbL12OfUP7NY0uqDkqnS+ZWiF4rRqto8uZdoDQvgEHNDsh\nagf4gdTCFbAb2M1RP6SbvP/CuVNmcPk05t77BhbGPXsityLJpx8="
+    - secure: "iDv2XGaTRpi70rd8N+D8QssxGpNGLyXKxokBceSD0JJGLgq2rVpz1vVvKAMA\nClOJQB8nUSYk7aqzUhJEhXgxkq95UDvhQihUzDJZloNTNGZ/yFubyALbXPfd\nmgCcHIr3tsAv6UzFvOrRnbSc3mn4/bTdhtpPFhuqJNDZ9TW5gPw="
+    - secure: "GDCc6Nd6+JQ/r248wk2bubdiRtKctVI92Aj0sCzIV+GWxVxVUVDksFaKNwOB\nI/0aQBNYDQxbA4jVYFpDd3AztZwup+GCg55EhDzz+xbRRnXGvfSxoB7x3wda\nZ2kqqY4zLOdK6VU7TT0w2tREZjJUV9+g5xIAY2Hy8S0vRneGvX8="
+
 
 before_script:
   - "export DISPLAY=:99.0"
