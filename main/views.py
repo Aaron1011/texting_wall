@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
 from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse, reverse_lazy
 from forms import WallForm
 import forms as local_forms
 import models
@@ -30,7 +31,7 @@ def index(request):
     return render_to_response("index.html", RequestContext(request))
 
 
-@login_required(login_url="/login/")
+@login_required(login_url=reverse_lazy('django.contrib.auth.views.login'))
 def display_wall(request, id):
     wall = get_object_or_404(models.Wall, pk=id)
     for i in wall.message_set.all():
@@ -74,7 +75,7 @@ def twitter_oauth(request, id=None):
 
         if 'message_page' in request.session:
             return HttpResponseRedirect(request.session['message_page'])
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('main.views.index'))
     auth_url = auth.get_authorization_url()
     request.session['request_token'] = (auth.request_token.key, auth.request_token.secret)
     request.session['wall_id'] = id
@@ -136,7 +137,7 @@ def _purchase_phone_number(request):
         if numbers:
             numbers[0].purchase()
             break
-    numbers[0].update(sms_method='POST', sms_url='/recieve_sms')
+    numbers[0].update(sms_method='POST', sms_url=reverse('main.views.sms_message'))
     return numbers[0]
 
 
@@ -178,10 +179,11 @@ def finish(request):
 
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect(reverse('main.views.index'))
 
 
-@login_required(login_url='/login/', redirect_field_name='/create_wall/')
+@login_required(login_url=reverse_lazy('django.contrib.auth.views.login',
+    kwargs={'template_name': 'login.html'}))
 def new_wall(request):
     if request.POST:
         f = WallForm(data=request.POST)
@@ -190,7 +192,8 @@ def new_wall(request):
             wallform.user = request.user
             wallform.phone_number = f.data['phone_number']
             wallform.save()
-            return HttpResponseRedirect('/wall' + str(wallform.id))
+            return HttpResponseRedirect(reverse('main.views.display_wall',
+                args=[wallform.id]))
         else:
             print f.errors
             return render_to_response(
@@ -246,8 +249,7 @@ def create_sms_sender(request):
                     othermessage.sender = sender
                     othermessage.save()
     print imageform.errors
-    return HttpResponseRedirect('/messages' + str(Wall.objects.get(message=request.POST['id'])).strip("#"))
-
+    return HttpResponseRedirect(reverse('main.views.display_messages', args=[str(Wall.objects.get(request.POST['id'].strip("#")))]))
 def json_response(f):
     def func(*args, **kwargs):
         status_code = 200
