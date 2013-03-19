@@ -34,8 +34,6 @@ def index(request):
 @login_required(login_url=reverse_lazy('django.contrib.auth.views.login'))
 def display_wall(request, id):
     wall = get_object_or_404(models.Wall, pk=id)
-    for i in wall.message_set.all():
-        print i.message
     return render_to_response("wall.html", {'wall': wall, 'messages': [str(m.message) for m in wall.message_set.all()],
                                             "PUBNUB_PUBLISH_KEY" : settings.PUBNUB_PUBLISH_KEY,
                                             "PUBNUB_SUBSCRIBE_KEY" : settings.PUBNUB_SUBSCRIBE_KEY,
