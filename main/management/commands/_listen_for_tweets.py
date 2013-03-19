@@ -72,6 +72,9 @@ def main():
                 print("Now filtering " + ", ".join(list(hashtags)))
                 stream.filter(track=list(hashtags), async=True)
             time.sleep(5)
+        except KeyboardInterrupt:
+            stream.disconnect()
+            quit()
         except Exception as e:
             print e
 
