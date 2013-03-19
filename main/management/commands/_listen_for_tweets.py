@@ -26,25 +26,28 @@ class PubnubListener(StreamListener):
         print message
         if 'text' in message:
             tweet = re.search("(#\S+)", str(message['text']))
-            print tweet.group(1)
-            wall = Wall.objects.filter(hashtag__iexact=tweet.group(1))
+            hashtag = tweet.group(1)
+            print hashtag
+            print self.pubnub.publish({
+                'channel': hashtag,
+                'message': {
+                    'message': str(message['text'])
+                }
+            })
+
+
+            wall = Wall.objects.filter(hashtag__iexact=hashtag)
             if len(wall) > 0:
                 message2 = Message()
                 message2.message = str(message['text'])
-                message2.hashtag = wall[0].hashtag
+                message2.hashtag = hashtag
                 message2.twitter_account = str(message['user']['screen_name'])
                 message2.wall = wall[0]
+                print "Saving message"
                 message2.save()
 
-                self.pubnub.publish({
-                    'channel': wall[0].hashtag,
-                    'message': {
-                        'message': str(message['text'])
-                    }
-                })
         else:
             print message
-
         return True
 
     def on_error(self, status):
