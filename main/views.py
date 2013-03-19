@@ -164,7 +164,7 @@ def create_account(request):
             form.save()
             user = authenticate(username=form.cleaned_data["username"], password=form.cleaned_data["password1"])
             auth_login(request, user)
-            return render_to_response('finish.html')
+            return HttpResponseRedirect(reverse('main.views.index'))
         return render_to_response(
             "create_account.html", {"form": form}, RequestContext(request))
     else:
