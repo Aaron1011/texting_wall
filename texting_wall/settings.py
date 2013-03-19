@@ -33,6 +33,8 @@ GOOGLE_ANALYTICS = False
 
 WALL_EXPIRATION = 10
 
+LOGIN_REDIRECT_URL = '/'
+
 ADMINS = (
     ('Aaron Hill', 'aa1ronham@gmail.com'),
 )
