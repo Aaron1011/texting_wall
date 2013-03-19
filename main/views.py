@@ -289,7 +289,7 @@ def close_wall(request):
 @json_response
 def ping_wall(request):
     wall = Wall.objects.get(pk=request.GET['id'])
-    wall.lastping = datetime.datetime.utcnow().replace(tzinfo=utc)
+    wall.lastping = datetime.datetime.now(utc)
     print wall.lastping
     wall.save()
 
