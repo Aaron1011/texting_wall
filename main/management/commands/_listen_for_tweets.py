@@ -63,7 +63,7 @@ def main():
     stream = None
     while True:
         try:
-            current_hashtags = set(w.hashtag for w in Wall.objects.filter(last_ping__lt=datetime.datetime.now(utc) - datetime.timedelta(minutes=settings.WALL_EXPIRATION)))
+            current_hashtags = set(w.hashtag for w in Wall.objects.filter(last_ping__gt=datetime.datetime.now(utc) - datetime.timedelta(minutes=settings.WALL_EXPIRATION)))
             if len(current_hashtags - hashtags) > 0:
                 if stream is not None:
                     stream.disconnect()
@@ -77,6 +77,7 @@ def main():
             quit()
         except Exception as e:
             print e
+        time.sleep(5)
 
 if __name__ == '__main__':
     main()
