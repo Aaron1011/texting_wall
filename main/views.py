@@ -44,7 +44,7 @@ def display_wall(request, id):
 
 
 def twitter_oauth(request, id=None):
-    auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET, settings.OAUTH_CALLBACK)
+    auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
     if 'request_token' in request.session:
         token = request.session['request_token']
         del request.session['request_token']
