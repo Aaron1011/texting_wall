@@ -111,8 +111,8 @@ def sms_message(request):
 
 def _get_phone_number():
     if settings.DEBUG:
-        return "6176005993"
-    return "6176005993"  # Will be removed when deployed to other companies
+        return "+16176005993"
+    return "+16176005993"  # Will be removed when deployed to other companies
 
     return [num for num in twilio_client.phone_numbers.list() if not Wall.objects.filter(phone_number__exact=num)]
 
