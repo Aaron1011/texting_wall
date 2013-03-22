@@ -147,7 +147,7 @@ env = environ.get("RACK_ENV", "dev")
 
 
 if env == "production":
-    DEBUG = False
+    DEBUG = True
     INSTALLED_APPS += ('gunicorn', "storages")
     import dj_database_url
     DATABASES['default'] = dj_database_url.config()
