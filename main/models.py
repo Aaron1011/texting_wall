@@ -13,6 +13,8 @@ class Wall(models.Model):
     user = models.ForeignKey(User, editable=False)
     phone_number = models.CharField(max_length=20)
     last_ping = models.DateTimeField(auto_now_add=True)
+    top_prompt_text = models.CharField(max_length=1024, null=True, blank=True)
+    bottom_prompt_text = models.CharField(max_length=1024, null=True, blank=True)
 
     def __unicode__(self):
         return self.hashtag
