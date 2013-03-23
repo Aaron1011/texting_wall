@@ -90,15 +90,17 @@ def sms_message(request):
     incoming_phone_number = request.POST['To']
 
     hashtag, body = _split_message(twilio_message, incoming_phone_number)
+    print hashtag, body
     if hashtag is not None and body is not None:
         message = models.Message()
         message.message = body
         message.phone_number = phone_number
         message.wall = models.Wall.objects.get(hashtag=hashtag)
         message.save()
+        print message
 
         pubnub = Pubnub(settings.PUBNUB_PUBLISH_KEY, settings.PUBNUB_SUBSCRIBE_KEY, settings.PUBNUB_SECRET, False)
-        pubnub.publish({
+        print pubnub.publish({
             'channel': hashtag,
             'message': {
                 'message': body
