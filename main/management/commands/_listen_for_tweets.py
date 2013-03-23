@@ -61,9 +61,11 @@ def main():
     auth = OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
     auth.set_access_token(settings.TWITTER_ACCESS_TOKEN, settings.TWITTER_ACCESS_TOKEN_SECRET)
     stream = None
+    print "Started"
     while True:
         try:
-            current_hashtags = set(w.hashtag for w in Wall.objects.filter(last_ping__gt=datetime.datetime.now(utc) - datetime.timedelta(minutes=settings.WALL_EXPIRATION)))
+            #current_hashtags = set(w.hashtag for w in Wall.objects.filter(last_ping__gt=datetime.datetime.now(utc) - datetime.timedelta(minutes=settings.WALL_EXPIRATION)))
+            current_hashtags = set(w.hashtag for w in Wall.objects.all())
             if len(current_hashtags - hashtags) > 0:
                 if stream is not None:
                     stream.disconnect()
