@@ -1,13 +1,19 @@
 {% extends "base.html" %}
 {% load static %}
 {% block css %}
-<link type="text/css" rel="stylesheet" href="{% static "wall/css/wall.css" %}" />
 {% endblock %}
- 
+
+
 {% block content%}
+<link type="text/css" rel="stylesheet" href="{% static "wall/css/wall.css" %}">
+<div id="header">
+<p class="top_prompt_text">{% if wall.top_prompt_text %}{{ wall.top_prompt_text }}{% endif %}</p>
 <p class="instructions">Text your message to <strong>(617) 600-5993</strong>, or tweet it with the hashtag <strong>{{ wall.hashtag }}</strong></p>
-<p class="footer">www.textingwall.org</p>
+<p class="bottom_prompt_text">{% if wall.bottom_prompt_text %}{{ wall.bottom_prompt_text }}{% endif %}</p>
+</div>
+
 <div class="messages"></div>
+<p class="footer">www.textingwall.org</p>
 {% endblock %}
 
 {% block javascript %}

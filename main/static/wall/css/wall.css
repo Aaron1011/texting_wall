@@ -1,16 +1,8 @@
-.messages p {
-    margin-bottom:10px;
-    font-size:20px;
-}
-
 p.instructions {
-    font-size:25px;
-    background-color:white;
-    position:fixed;
+    font-size:40px;
     padding:10px;
-    top:0px;
-    left:0px;
     padding-bottom:25px;
+    line-height: normal;
 }
 
 p.footer {
@@ -22,8 +14,21 @@ p.footer {
 }
 
 .messages {
-    margin-top:60px;
-    margin-bottom:50px;
+    margin-top:150px;
+    font-size: 70px;
+    margin-bottom:10px;
     text-align:center;
+    top: 500px;
+    line-height: normal;
 }
 
+.top_prompt_text {
+    font-size: 30px;
+    padding: 10px;
+}
+
+#header {
+    position: fixed;
+    top: 0px;
+    background-color: white;
+}
