@@ -249,7 +249,8 @@ def create_sms_sender(request):
                     othermessage.sender = sender
                     othermessage.save()
     print imageform.errors
-    return HttpResponseRedirect(reverse('main.views.display_messages', args=[str(Wall.objects.get(request.POST['id'].strip("#")))]))
+    return HttpResponseRedirect(reverse('main.views.display_messages',
+        args=[Message.objects.get(pk=request.POST['id']).wall.hashtag.strip("#")]))
 def json_response(f):
     def func(*args, **kwargs):
         status_code = 200
