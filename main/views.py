@@ -232,13 +232,13 @@ def create_sms_sender(request):
     if imageform.is_valid():
         if message.phone_number == "+1" + request.POST['areacode'] + request.POST['first'] + request.POST['second']:
             photo = request.FILES.get('photo')
-
             sender = MessageSender()
             sender.phone_number = message.phone_number
             sender.name = imageform.cleaned_data['name']
-            photoname = photo.name.split('.')[0]
-            resizedphoto = _handle_uploaded_photo(photo)
-            sender.image.save(photoname + '.png', resizedphoto)
+            if photo:
+                photoname = photo.name.split('.')[0]
+                resizedphoto = _handle_uploaded_photo(photo)
+                sender.image.save(photoname + '.png', resizedphoto)
             sender.save()
 
             message.sender = sender

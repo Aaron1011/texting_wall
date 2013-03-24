@@ -79,8 +79,13 @@
             <td>
                 <div class="media">
                     {% if message.sender %}
-                    <a class="pull-left" href={{ message.sender.image.url }}>
-                        <img class="media-object" src={{ message.sender.image.url }}>
+                        {% if message.sender.image %}
+                            <a class="pull-left" href={{ message.sender.image.url }}>
+                            <img class="media-object" src={{ message.sender.image.url }}>
+                        {% else %}
+                            <a class="pull-left" href={% static "messages/img/unknown.png" %}}>
+                            <img class="media-object" src={% static "messages/img/unknown.png" %}>
+                        {% endif %}
                     </a>
                     <div class="media-body">
                         <p>{{ message.sender }}</p>

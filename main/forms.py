@@ -40,5 +40,5 @@ class WallForm(forms.ModelForm):
 
 class UploadImageForm(forms.Form):
     name = forms.CharField()
-    photo = forms.ImageField()
+    photo = forms.ImageField(required=False)
     claimall = forms.BooleanField(required=False, label="Clame all other messages sent using this phone number")
