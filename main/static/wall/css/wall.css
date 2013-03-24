@@ -1,5 +1,5 @@
 p.instructions {
-    font-size:40px;
+    font-size:50px;
     padding:10px;
     padding-bottom:25px;
     line-height: normal;
@@ -10,11 +10,13 @@ p.footer {
     background-color:white;
     position:fixed;
     bottom:0px;
+    width:100%;
     padding:10px;
+    margin-bottom:0px;
 }
 
 .messages {
-    margin-top:150px;
+    margin-top:120px;
     font-size: 70px;
     margin-bottom:10px;
     text-align:center;
@@ -23,12 +25,15 @@ p.footer {
 }
 
 .top_prompt_text {
-    font-size: 30px;
+    font-size: 65px;
     padding: 10px;
+    font-weight: bold;i
+    margin-top: 20px;
 }
 
 #header {
     position: fixed;
     top: 0px;
     background-color: white;
+    text-align-center
 }
