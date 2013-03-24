@@ -86,7 +86,6 @@
                         <p>{{ message.sender }}</p>
                     </div>
                     {% else %}
-                    {% if user.is_superuser %}
                         <a class="pull-left" href={% static "messages/img/unknown.png" %}>
                             <img class="media-object" src={% static "messages/img/unknown.png" %}>
                         </a>
@@ -97,7 +96,6 @@
                             <a class="btn tweet" data-toggle="modal" data-modal="#tweetModal" data-message={{ message.id }}>Add name/photo</a>
                         {% endif %}
                     </div>
-                    {% endif %}
                     {% endif %}
 
                 </div>
