@@ -3,12 +3,11 @@ p.instructions {
     padding:10px;
     line-height: normal;
     text-align: center;
-    background-color: white;
+    background-color: rgb(255, 226, 249);
 }
 
 p.footer {
     font-size:20px;
-    background-color:white;
     position:fixed;
     bottom:0px;
     width:100%;
@@ -23,6 +22,7 @@ p.footer {
     text-align:center;
     top: 500px;
     line-height: normal;
+    background-color: rgb(231, 255, 254);
 }
 
 .top_prompt_text {
@@ -30,13 +30,15 @@ p.footer {
     padding: 10px;
     font-weight: bold;i
     margin-top: 20px;
-    background-color:white;
 }
 
 #header {
     position: fixed;
     top: 0px;
     width: 100%
-    background-color: white;
     text-align: center;
+}
+
+html {
+    background-color: rgb(231, 255, 254);
 }
