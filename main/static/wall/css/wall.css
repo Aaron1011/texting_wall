@@ -1,8 +1,9 @@
 p.instructions {
-    font-size:50px;
+    font-size:60px;
     padding:10px;
-    padding-bottom:25px;
     line-height: normal;
+    text-align: center;
+    background-color: white;
 }
 
 p.footer {
@@ -16,7 +17,7 @@ p.footer {
 }
 
 .messages {
-    margin-top:120px;
+    margin-top:200px;
     font-size: 70px;
     margin-bottom:10px;
     text-align:center;
@@ -29,11 +30,13 @@ p.footer {
     padding: 10px;
     font-weight: bold;i
     margin-top: 20px;
+    background-color:white;
 }
 
 #header {
     position: fixed;
     top: 0px;
+    width: 100%
     background-color: white;
-    text-align-center
+    text-align: center;
 }
