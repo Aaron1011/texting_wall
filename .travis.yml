@@ -14,14 +14,12 @@ env:
     - secure: "V1Gm/EACVfbUsUGM/W2SJu+BzXq/+jCPzk+m5dlQxGYF/Kzn5H+emuIAfNcm\nsXv4077KCG5tr4LbL12OfUP7NY0uqDkqnS+ZWiF4rRqto8uZdoDQvgEHNDsh\nagf4gdTCFbAb2M1RP6SbvP/CuVNmcPk05t77BhbGPXsityLJpx8="
     - secure: "iDv2XGaTRpi70rd8N+D8QssxGpNGLyXKxokBceSD0JJGLgq2rVpz1vVvKAMA\nClOJQB8nUSYk7aqzUhJEhXgxkq95UDvhQihUzDJZloNTNGZ/yFubyALbXPfd\nmgCcHIr3tsAv6UzFvOrRnbSc3mn4/bTdhtpPFhuqJNDZ9TW5gPw="
     - secure: "GDCc6Nd6+JQ/r248wk2bubdiRtKctVI92Aj0sCzIV+GWxVxVUVDksFaKNwOB\nI/0aQBNYDQxbA4jVYFpDd3AztZwup+GCg55EhDzz+xbRRnXGvfSxoB7x3wda\nZ2kqqY4zLOdK6VU7TT0w2tREZjJUV9+g5xIAY2Hy8S0vRneGvX8="
-
+    - secure: "dEpOZFPfTXI/nB2gCV4JtBPrP/2QsfnljnACPWZMEYZ0uYCxTctQGpKiVReI\ncJItvtRfcrQKJKj6sM060K4IFgeswzYuysWI/m73enNA93pyuv1/0lm8ZvJh\nD92kfkFx8coZO0GZV8V7C5z7hcEpjYRR3W/+qnq4MJItogqCZ5I="
+    - secure: "AdDKkSvyA5qwzGs0RF1TJ2spbyIv0kDRk8IZsyyCS68WYNTIGRiWldvc2DCd\nC9HN2FZ2BgblrpQ/x+UUF1E0Urt/vuKUaXtEyis/tHV5SSFVrqU8j+VSzHCU\nWMg7BqdWLFpp+TMVYR0MWqtF2Y2hbqxLXE1uaOiNMd0czrjppik="
 
 before_script:
   - "sh -e /etc/init.d/xvfb start"
   - sleep 3
-  - "python manage.py syncdb --noinput"
-  - "python manage.py migrate"
-  - "python manage.py listen_for_tweets &"
 
 script:
   - "python manage.py test main"
