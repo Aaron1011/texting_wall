@@ -84,7 +84,8 @@ class TwitterListener(object):
             self.filter()
 
     def exit(self):
-        self.stream.disconnect()
+        if self.stream is not None:
+            self.stream.disconnect()
 
 
 def main():
