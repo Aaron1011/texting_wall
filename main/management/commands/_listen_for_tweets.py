@@ -53,8 +53,55 @@ class PubnubListener(StreamListener):
     def on_error(self, status):
         print status
 
+class TwitterListener(object):
+
+    def __init__(self):
+        pubnub = Pubnub.Pubnub(settings.PUBNUB_PUBLISH_KEY, settings.PUBNUB_SUBSCRIBE_KEY, settings.PUBNUB_SECRET, False)
+
+        self.pubnub_listener = PubnubListener(pubnub)
+        self.stream = None
+        self.hashtags = set()
+        self.auth = OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
+        self.auth.set_access_token(settings.TWITTER_ACCESS_TOKEN, settings.TWITTER_ACCESS_TOKEN_SECRET)
+
+    def update_hashtags(self):
+        current_hashtags = set(w.hashtag for w in Wall.objects.all())
+        if len(current_hashtags - self.hashtags) > 0:
+            self.hashtags = current_hashtags
+            return True
+
+    def filter(self):
+        if self.stream is not None:
+            self.stream.disconnect()
+        self.stream = Stream(self.auth, self.pubnub_listener)
+
+        print("Now filtering " + ", ".join(list(self.hashtags)))
+
+        self.stream.filter(track=list(self.hashtags), async=True)
+
+    def update(self):
+        if self.update_hashtags():
+            self.filter()
+
+    def exit(self):
+        self.stream.disconnect()
+
 
 def main():
+    print "Started"
+    twitter_listener = TwitterListener()
+
+    while True:
+        try:
+            twitter_listener.update()
+            time.sleep(5)
+        except KeyboardInterrupt:
+            twitter_listener.exit()
+            break
+        except Exception as e:
+            print e
+
+def main_old():
     pubnub = Pubnub.Pubnub(settings.PUBNUB_PUBLISH_KEY, settings.PUBNUB_SUBSCRIBE_KEY, settings.PUBNUB_SECRET, False)
     hashtags = set()
 
@@ -76,7 +123,7 @@ def main():
             time.sleep(5)
         except KeyboardInterrupt:
             stream.disconnect()
-            quit()
+            break
         except Exception as e:
             print e
         time.sleep(5)
