@@ -16,6 +16,7 @@ env:
     - secure: "GDCc6Nd6+JQ/r248wk2bubdiRtKctVI92Aj0sCzIV+GWxVxVUVDksFaKNwOB\nI/0aQBNYDQxbA4jVYFpDd3AztZwup+GCg55EhDzz+xbRRnXGvfSxoB7x3wda\nZ2kqqY4zLOdK6VU7TT0w2tREZjJUV9+g5xIAY2Hy8S0vRneGvX8="
     - secure: "dEpOZFPfTXI/nB2gCV4JtBPrP/2QsfnljnACPWZMEYZ0uYCxTctQGpKiVReI\ncJItvtRfcrQKJKj6sM060K4IFgeswzYuysWI/m73enNA93pyuv1/0lm8ZvJh\nD92kfkFx8coZO0GZV8V7C5z7hcEpjYRR3W/+qnq4MJItogqCZ5I="
     - secure: "AdDKkSvyA5qwzGs0RF1TJ2spbyIv0kDRk8IZsyyCS68WYNTIGRiWldvc2DCd\nC9HN2FZ2BgblrpQ/x+UUF1E0Urt/vuKUaXtEyis/tHV5SSFVrqU8j+VSzHCU\nWMg7BqdWLFpp+TMVYR0MWqtF2Y2hbqxLXE1uaOiNMd0czrjppik="
+    - secure: "oFEmcVqsyl7u/GQkKNZwVfPng3LsNjnDqzxTlhd5DcPqn0NCewUbxRYHkSlo\npGy0mXATva44cln5qeBWegpKzs20aqh+aNmX+1xdKIeOlHm4JCOhholGzX2N\nJVWH36ue2OsP4HzmmKWsYGlesRTUN58OTNuNWtuQmUyVNECOIK8="
 
 before_script:
   - "sh -e /etc/init.d/xvfb start"
