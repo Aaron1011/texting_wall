@@ -182,8 +182,8 @@ if env != "dev":
     AWS_SECRET_ACCESS_KEY = environ.get("AWS_SECRET_ACCESS_KEY", "")
 
     S3_URL = 'http://s3.amazonaws.com/%s' % AWS_STORAGE_BUCKET_NAME
-    STATIC_DIRECTORY = '/static'
-    MEDIA_DIRECTORY = '/media'
+    STATIC_DIRECTORY = '/static/'
+    MEDIA_DIRECTORY = '/media/'
     STATIC_URL = S3_URL + STATIC_DIRECTORY
     MEDIA_URL = S3_URL + MEDIA_DIRECTORY
 
