@@ -187,6 +187,8 @@ if env != "dev":
     STATIC_URL = S3_URL + STATIC_DIRECTORY
     MEDIA_URL = S3_URL + MEDIA_DIRECTORY
 
+    ALLOWED_HOSTS = ['.textingwall.org', '.textingwall.org.'] # Allow FQDN
+
 
 try:
     from local_settings import *

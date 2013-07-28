@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from django.views.generic.simple import redirect_to
+from django.views.generic.base import RedirectView
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from django.conf.urls.static import static
@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     url(r'^messages/(?P<name>\w+)/', 'main.views.display_messages'),
     url(r'^authorize/(?P<id>\d+)/', 'main.views.twitter_oauth'),
     url(r'^authorize$', 'main.views.twitter_oauth'),
-    url(r'^uucmthanks/', redirect_to, {'url': '/messages/uucmthanks/'}),
+    url(r'^uucmthanks/', RedirectView.as_view(url='/messages/uucmthanks/')),
     url(r'^create_sms_sender/', 'main.views.create_sms_sender'),
     url(r'^verify_sms/', 'main.views.verify_sms'),
     url(r'^close_wall/', 'main.views.close_wall'),
