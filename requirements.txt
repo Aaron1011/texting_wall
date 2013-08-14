@@ -1,7 +1,7 @@
 Django==1.5.1
 psycopg2==2.4.5
 dj-database-url==0.2.0
-tweepy==1.11
+tweepy==2.1
 gunicorn==0.14.6
 django-storages==1.1.5
 South==0.7.6
