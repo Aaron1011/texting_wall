@@ -43,10 +43,23 @@ s.parentNode.insertBefore(ga, s);
 
 </script>
 {% endif %}
+
+<script>
+var _prum = [['id', '520bd6f4abe53d210b000000'],
+             ['mark', 'firstbyte', (new Date()).getTime()]];
+(function() {
+    var s = document.getElementsByTagName('script')[0]
+      , p = document.createElement('script');
+    p.async = 'async';
+    p.src = '//rum-static.pingdom.net/prum.min.js';
+    s.parentNode.insertBefore(p, s);
+})();
+</script>
+
 </head>
 
 <body>
-{% block content%} 
+{% block content%}
 {% endblock %}
 <script src="http://code.jquery.com/jquery-latest.js"></script>
 <script type="text/javascript" src="{% static "bootstrap/js/bootstrap.js" %}"></script>
